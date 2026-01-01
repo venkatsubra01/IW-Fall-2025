@@ -77,11 +77,17 @@ Scale-invariant MDE models like DepthAntyhingV2 (\textbf{Cite}) mitigate this by
 useable in real-world scenarios that require metric depth, the user must know the mean depth of the scene a priori and multiply every scale-invariant depth prediction by that value. Obviously, knowing the precise mean depth of a scene is still hard, so 
 scale-invariant metric models fail to solve the metric MDE problem. Still, the authors of DepthAnythingV2 release both scale-invariant and metric MDE pretrained checkpoints for DepthAnythingV2, where the metric checkpoint is $\textbf{Look up where the metric checkpoint comes from}$
 
+
 There have also been several recent works (\textbf{Cite MoGe-2, DepthPro, and maybe 1 more}) in metric MDE. These works broadly attempt to bypass the inherent scale ambiguity issue of MDE by training large transformer models with "large-scale training" to have the model implicitly learn 
 to understand the general scale of objects in the real-world. For example, when looking at a scene with a car, a large metric MDE model would understand that the height of cars are generally 1.5-2.5 meters, which allows the model to triangulate how far the car, along with the objects nearby it, are from the camera. 
 DepthPro does this through a separate branch to predict the focal length of the camera taking the image, while MoGe-2 does $\textbf{Find what MoGe does}$. Interesting developments have recently been made in the context of MDE for videos through models like Video Depth Anything, which involve models getting a video in the form of several image frames as input 
 and predicting metric depth for each frame. The intuition for why video models that take several frames as input at a time would perform better than a single-frame metric MDE model applied on each video frame seprately is that depth predictions over a video must have temporal consistency. For instance, a video of a dog running from far away to close to the camera should have a smooth transition of the depth prediction of the dog 
 from far to close, whereas a metric MDE model may slightly mispredict the scale of the scene such that the dog is labeled with a large depth in one frame, a close depth in the next frame, and a far depth again in the next frame, which is temporally inconsistent and characterizes an undesirable phenomena referred to as flickering. We will lean on this intuition of temporal consistency in video metric MDE models and apply it to DfD.
+
+Some metric MDE methods integrate camera intrinsics into the depth estimation to resolve field-of-view (FOV) ambiguity. CAM-Convs proposes a variant of a CNN for single-view metric depth estimation where the convolutions are conditioned on the camera intrinsics. ZeroDepth embeds the camera intrinsics into a transformer model such that the features for an image are "aware" of the camera intrinsics after a cross-attention block is applied between the image features and the camera intrinsics embedding vectors. Metric3D scaled AiF images and the corresponding depth map to a "canonicalized" space such that the model learns to predict in this canonical space and "undos" the canonicalization at evaluation or inference time.
+
+Though we do not know exactly what deep networks are learning when trained for MDE, it is reasonable to assume that single-view metric MDE models are implicitly learning a "familiar metric size" of objects in the world and calculating metric distance from the camera to that object based on the number of pixels, or pixel size, of that object in the input image. However, if the focal length varies in the training data, then the FOV also varies, so the same object may have different sizes, which makes the single-view metric MDE problem much harder. Thus, if an image of a fixed size object from the same distance away from the camera has the same pixel size on the image, then a model could stably deduce the depth up to scale to the object and the relative depth of the scene. It is worth noting that integrating camera intrinsics via canonicalization or directly embedding the focal length does not resolve scale ambiguity entirely, but rather knowing the camera intrinsics allows a model to know that a point in an image maps to a particular ray direction extending out of the pinhole camera. The exact point along the ray that corresponds to the distance of the point from the camera is still unknown and must be estimated via some other signal like familiarity with the general size of objects in a scene or defocus cues. Cite: https://arxiv.org/html/2312.06594v2
+
 
 \begin{figure}[hbt]
 \centering
@@ -161,17 +167,20 @@ To summarize our contributions, we:
 
 \ref{table:training-data} and \ref{table:evaluation-data} give an overview of the datasets considered for this paper. We chose to use Hypersim and ARKitScenes to train DfDNet for three main reasons. First, both datasets contain tens of thousands of training samples, which 
 is on the appropriate order of magnitude for training a deep model. This first criteria also motivates excluding DDFF 12-Scene since it only has a few hundred training samples. The second reason for choosing Hypersim and ARKitScenes is that they both are indoor datasets with  . Diagram BLANK shows the depth distributions of Hypersim and ARKitScenes, which shows that the mean depth of Hypersim and ARKitScenes are both less than 6 meters. On the other hand, TartanAir, as an outdoor dataset, is known to have large depth values as high as greater than 100 meters regularly in its training samples. Training on samples in an outdoor setting poses unique challenges due to the hyperfocal length phenomena (all images in the focus stack appearing like AiF images when objects in the image are sufficiently far away and the focus distance is also large), so we leave training on outdoor datasets to future work and also only evaluate in an indoor setting. The last important criteria for the training datasets are the degree to which there are holes in the ground-truth depth maps. Hypersim has relatively few ground-truth depth map holes since there are only holes for windows or reflective surfaces. ARKitScenes has more holes due to sensor error given that ARKitScenes is a real-world dataset. In both of these cases, we filled the holes with a constant depth value of 1000. We knew we had to fill in the hole values somehow since the Gaussian convolution approximation of the CoC formula during synthetic focus stack generation involves applying a kernel over the entire image, so holes will propagate if we do not handle them carefully. We also noticed that since many of the holes were coming from ambiguous depth labels for the sky, we chose to label the holes with a correspondingly large depth value to distinguish those invalid values from the valid portions of the scene. However, since some reflective surfaces and arbitrary sections of the image were also given no depth value in the datasets due to sensor error and reflectivity, we applied a mask to the predicted depth of the model before applying a loss such that the model is not penalized for wrong depth values in sections of the image that were holes originally. Future work could fill in the holes using depth completion methodsf (cite Omni-DC, etc.) or explicitly filter out images with a sufficiently large portion of the image as invalid to provide a better heuristic.
-
 \begin{table}[hbt]
   \centering
-  \begin{tabular}{|l|l|l|l|l|} \hline
-    \textbf{Dataset} & \textbf{\# of Samples} & \textbf{Depth Range} & \textbf{Diversity} & \textbf{GT Depth Holes} \\ \hline
-    iBims-1 & 100 & Indoors & \checkmark & Few (sky+reflective) \\ \hline
-    DDFF 12-Eval & 200 & Indoors & \xmark & Many (sensor error) \\ \hline
+  \begin{tabular}{|l|l|l|l|l|l|} \hline
+    \textbf{Dataset} & \textbf{\# of Samples} & \textbf{Depth Range} & \textbf{Diversity} & \textbf{GT Depth Holes} & \textbf{Data Type} \\ \hline
+    Hypersim & 66428 & Indoors & \checkmark & Few (sky+reflective) & AiF image \\ \hline 
+    ARKitScenes & 24647 & Indoors & \checkmark & Many (sensor error) & AiF image \\ \hline 
+    DDFF 12-Scene & 400 & Indoors & \xmark & Many (sensor error) & Focus stack \\ \hline 
+    TartanAir & 279459 & Indoors + Outdoors & \checkmark & None & AiF image \\ \hline
   \end{tabular}
-  \caption{Evaluation Datasets}
-  \label{table:evaluation-data}
+  \caption{Training Datasets Considered}
+  \label{table:training-data}
 \end{table}
+
+
 \textbf{CHECK THESE, green for ones we chose and red for ones not chosen}
 
 \subsection{Training Data Diversity and Augmentation}
@@ -196,41 +205,60 @@ The second data augmentation we made was in regards to the focus distance sampli
 
 Thus, for a fixed depth $d$, a uniform step in inverse focus distance ($d_f$) space is approximately a uniform step in defocus space. This approximation breaks down for very small focus distances since we relied on the fact that the focal length is usually around 50 millimeters, whereas focus distance is in meters. Thus, we sample focus distances uniformly in inverse depth, or disparity, space. However, we still have to identify the lower and upper bound in disparity space to interpolate between. We could identify the 5th percentile and 95th percentile ground-truth disparity in the training setting for the lower and upper bound to linearly interpolate between for the sampled focus distances to synthetically generate, but this means that the focus distances themselves serve as a prior that encodes the scale of the scene. In both real-world and evaluation settings, the focus distances sampled in DfD is agnostic to the scene depth, so we instead choose to randomly sample the lower and upper bound for the focus distances. We decided to have $\text{disp}_\text{lower} \sim Unif(0.05, 0.25)$ and $\text{disp}_\text{upper} \sim Unif(1,2)$. The disparity lower bound being uniform between 0.05 and 0.25 means that the maximum sampled focus distance can be anywhere between 4 and 20 meters, which covers the range of indoor scenes. The disparity upper bound being between 1 and 2 means that the depth lower bound for the sampled focus distances is between 0.5 and 1 meter, which seemed to capture the distance of the closest object to the camera in indoor scenes in both the training and evaluation datasets. A potential drawback of this focus distance sampling strategy is that some generated focus stacks do not have any useful defocus cues. For example, an indoor scene where the closest object is actually 4 meters away from the camera but the $\text{disp}_\text{lower} = 0.25$ would have all the sampled focus distances be closer than the closest object in the scene, meaning the entire scene appears out of focus in the entire focus stack. Future work could propose a more sophisticated focus distance sampling strategy that balances scene-agnostic depth sampling to make training appropriately hard while also avoiding afformentioned training samples that are unnecessarily hard. Ideally, this more sophisticated focus distance sampling strategy could be loaded onto a real camera such that focus stacks can be collected programatically in real-world settings, though the sampling strategy we propose here, combined with a model that detects if the focus stack has sufficient defocus cues and resamples the focus stack if not, is probably sufficient.
 
-\begin{table}[hbt]
-  \centering
-  \begin{tabular}{|l|l|l|l|l|l|} \hline
-    \textbf{Dataset} & \textbf{\# of Samples} & \textbf{Depth Range} & \textbf{Diversity} & \textbf{GT Depth Holes} & \textbf{Data Type} \\ \hline
-    Hypersim & 66428 & Indoors & \checkmark & Few (sky+reflective) & AiF image \\ \hline 
-    ARKitScenes & 24647 & Indoors & \checkmark & Many (sensor error) & AiF image \\ \hline 
-    DDFF 12-Scene & 400 & Indoors & \xmark & Many (sensor error) & Focus stack \\ \hline 
-    TartanAir & 279459 & Indoors + Outdoors & \checkmark & None & AiF image \\ \hline
-  \end{tabular}
-  \caption{Training Datasets Considered}
-  \label{table:training-data}
-\end{table}
 
+\subsection{DfDNet}
+Here, we introduce the architecture of DfDNet, the first transformer-based DfD model. DfDNet has an encoder-decoder architecture similar to that of DepthAnythingV2. The most interesting differences are within the encoder, which is derived from the well-known DINOv2 encoder with two main differences. In the following description, we use "temporal" dimension and "focus stack" dimension interchangeably. First, we apply a temporal attention module after every spatial attention block for the first $m$ attention blocks. After the $m+1$-th DINO spatial attention block, we include an average pooling layer that "collapses" the features across the focus stack dimension. The motivation for this is twofold. First, a hypothesis we had was that the model can encode all the defocus information it needs before the 12th temporal attention module. The second reason is that collapsing the focus stack reduces the number of features being passed through the model by a multiple of $n$, where $n$ is the size of the focus stack ($n=4$ in the diagram, and the batch size is 2). This allows us to run a faster inference, speedup training, and generally be more memory efficient. We ablate the exact number of layers before the collapse that is optimal, the use of average pooling versus max pooling, and the inference time comparisons in the evaluation section. 
+
+The temporal attention module itself has a few interesting features to note. The module is motivated and derived from the "motion module" and spatiotemporal head introduced by the authors of Video Depth Anything. There are also other video depth papers that introduce similar temporal attention modules (\textbf{Cite FlashDepth, etc.}), but we chose to write code on top of Video Depth Anything's released motion module code since Video Depth Anything shares an architecture very similar to DepthAnythingV2 already, so migrating the Video Depth Anything motion module code to DfDNet seemed to be easier. Even though video depth estimation (VDE) seems to be a different problem than DfD, our core realization was that the problems are actually very similar. Of course, they both are monocular depth, but they both also have the core requirement of needing to integrate information across some type of temporal dimension (focus stack for DfD and frames over seconds for VDE). There are, however, a few key differences. First, VDE involves $m$ input frames and $m$ corresponding depth prediction frames as output, whereas DfD is single-view and has $m$ input frames but only 1 output depth prediction frame, which is why we must do some type of pooling to collapse the temporal dimension. Another important difference is the embedding used by Video Depth Anything's motion module versus DfDNet's temporal attention module. Since attention is permutation invariant with respect to the input features, Video Depth Anything had to explicitly embed the order of the frames via a positional embedding to leverage the temporal consistency signal for depth prediction on a video. However, DfD does not leverage temporal consistency merely from the order of the input frames, but rather from the focus distances associated with each frame. Since the focus distance input is 1 metric number for each frame in the focus stack, we passed the focus distances into an MLP that maps each 1-dimensional FD to be the same dimensionality as the focus stack features. Then we added the embedded focus distance vector to the focus stack features since the dimensionalities match up and used this new set of FD+Focus Stack feature vectors as the input for a self-attention block that involves isolating the temporal dimension from the batch dimension and attending over the temporal attention for each feature in the focus stack. The result of this is a set of FD-aware, temporally attended set of features, and as the functions $f$, $g$, and $h$ that map the FD+focus stack features to the query, key, and value vectors respectively are learned along with the FD embedding MLP, this module can support the integration of defocus cues into the focus stack features.
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=1.1\linewidth]{DfDNet Architecture.png}
+\caption{This is a gray image.}
+\label{fig:dfdnet-architecture}
+\end{figure}
+
+
+
+
+\subsection{Canonicalization}
+
+DfDNet-canonical indicates that we also canonicalized the focus distances and target depth when training to have the model learn to predict depth in a canonical space. The scaling factor for canonicalization is $\frac{w}{max(f_x, f_y)}$, where $w$ is the width of the image and $f_x$ and $f_y$ are the horizontal and vertical focal length of the camera respectively. The motivation for this comes naturally from the fact that the projection of a 3D point $(X,Y,Z)$ onto the image plane to the 2D point $(x,y)$, assuming $f_x \approx f_y = f$, follows the formula $x=f \frac{X}{Z}$ and $y=f \frac{Y}{Z}$. Rearranging, we get $\frac{x}{f} = \frac{X}{Z} = \tan(\theta_x)$ and $\frac{y}{f} = \frac{Y}{Z} = \tan(\theta_y)$, where $\theta_x$ and $\theta_y$ correspond to the horizontal displacement angle and vertical displacement angle, respectively, of the ray extending from the principal point of the camera to $(X,Y,Z)$. By dividing the target depth and focus distances during training by $\frac{w}{f}$, where $max(f_x,f_y)=f$, we normalize the correspondence between the 2D image coordinate and the ray to the 3D point.
+
+At evaluation time, we undo the canonicalization by the same scaling factor. This procedure is identical to the canonicalization procedure in DepthPro and Metric3D.
+
+
+\subsection{Loss}
+
+The loss function for DfDNet has two terms. The first term is a SiLog loss term:
+
+
+The second term is a gradient matching scale loss:
+
+
+Thus, the overall loss function is:
+
+Here, $\alpha$ is a tunable hyperparameter for balancing \textbf{Finish}
 \begin{itemize}
-  \item Training and evaluation data used and why
-  
-
-  
-
-
-
-  \item Filling in holes, acknowledging sensor error, diverse depth coverage
-  \item FD sampling strategy
-  \item Randomize fnumber, scaling, color jitter, random cropping
-  \item Canonicalization 
-  \item Design diagram (include canonicalization)
-  \item Types of attention in play (temporal attention in motion module, spatial attention in DINO)
   \item Loss functions
   
   
 \end{itemize}
 
 \section{Evaluation, 5.5}
+\begin{table}[hbt]
+  \centering
+  \begin{tabular}{|l|l|l|l|l|} \hline
+    \textbf{Dataset} & \textbf{\# of Samples} & \textbf{Depth Range} & \textbf{Diversity} & \textbf{GT Depth Holes} \\ \hline
+    iBims-1 & 100 & Indoors & \checkmark & Few (sky+reflective) \\ \hline
+    DDFF 12-Eval & 200 & Indoors & \xmark & Many (sensor error) \\ \hline
+  \end{tabular}
+  \caption{Evaluation Datasets}
+  \label{table:evaluation-data}
+\end{table}
 Notes:
 \begin{itemize}
+  \item Experiments that were run
   \item iBims-1
   \item DDFF12
   \item Chart showing results 

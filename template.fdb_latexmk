@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex template"] 1767287408.9409 "template.aux" "template.bbl" "template" 1767287412.33453 0
+["bibtex template"] 1767303679.0151 "template.aux" "template.bbl" "template" 1767303680.33642 0
   "./IEEEtranS.bst" 1579876160 63078 c178ca025aee61c6ef412d990970df9b ""
   "./references.bib" 1767216672.62006 786 3d399290b7050af748c10df24feb5aaf ""
-  "template.aux" 1767287412.07351 2756 928d77393f373cfd94b2aac1e39124ca "pdflatex"
+  "template.aux" 1767303680.08566 3335 06261e9f68cc03b20b087a50d8ac63c2 "pdflatex"
   (generated)
   "template.bbl"
   "template.blg"
   (rewritten before read)
-["pdflatex"] 1767287411.122 "/Users/vs/Documents/Latex/IWreport/template.tex" "template.pdf" "template" 1767287412.33468 0
-  "/Users/vs/Documents/Latex/IWreport/template.tex" 1767287410.92066 29898 06a76412d748216ecd8516792a9cede5 ""
+["pdflatex"] 1767303679.10821 "/Users/vs/Documents/Latex/IWreport/template.tex" "template.pdf" "template" 1767303680.33655 0
+  "/Users/vs/Documents/Latex/IWreport/template.tex" 1767303677.43815 37505 10b1acc244ea4be3ff7f51c78470cc0a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/helvetic/phvb8r.tfm" 1136768653 4484 b828043cbd581d289d955903c1339981 ""
@@ -217,14 +217,15 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1766239120 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1741450574 3345740 46b66fdb0378f7bf5921b5eabf1762b8 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
+  "DfDNet Architecture.png" 1767301028.33639 137005 8de44ee4c316ced2f3f1e1665fac5263 ""
   "IW Fall 2025 Fig. 1 (2).png" 1767103856.8936 228515 cc02b4ddc3636e52062111aa925f2b66 ""
   "Synthetic Focus Stack Generation Diagram.png" 1767106989.88254 1096686 f02c2a1c8d5fc2ba8e7f70e2382bf5bd ""
   "couriers.sty" 1579876160 1046 65097780df95c88bd4a498273f67af3b ""
   "jpaper.cls" 1579876161 6911 f11a119bc03bb904a35c4b7b655791cb ""
-  "template.aux" 1767287412.07351 2756 928d77393f373cfd94b2aac1e39124ca "pdflatex"
-  "template.bbl" 1767287409.04555 1217 8dc58d80f10492b075b101ac9345222a "bibtex template"
-  "template.out" 1767287412.07412 1881 650cb79e75d8148859d360a46cf19262 "pdflatex"
-  "template.tex" 1767287410.92066 29898 06a76412d748216ecd8516792a9cede5 ""
+  "template.aux" 1767303680.08566 3335 06261e9f68cc03b20b087a50d8ac63c2 "pdflatex"
+  "template.bbl" 1767303679.10548 1217 8dc58d80f10492b075b101ac9345222a "bibtex template"
+  "template.out" 1767303680.08636 2185 53dfbe4c8b40abe84f7297391bb968d4 "pdflatex"
+  "template.tex" 1767303677.43815 37505 10b1acc244ea4be3ff7f51c78470cc0a ""
   (generated)
   "template.aux"
   "template.log"

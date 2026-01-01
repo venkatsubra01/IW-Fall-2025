@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  1 JAN 2026 12:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  1 JAN 2026 16:41
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -835,42 +835,43 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
 [2]
 
 [3]
-<IW Fall 2025 Fig. 1 (2).png, id=71, 1003.75pt x 460.72125pt>
+<IW Fall 2025 Fig. 1 (2).png, id=83, 1003.75pt x 460.72125pt>
 File: IW Fall 2025 Fig. 1 (2).png Graphic file (type png)
 <use IW Fall 2025 Fig. 1 (2).png>
-Package pdftex.def Info: IW Fall 2025 Fig. 1 (2).png  used on input line 88.
+Package pdftex.def Info: IW Fall 2025 Fig. 1 (2).png  used on input line 94.
 (pdftex.def)             Requested size: 469.75502pt x 215.61807pt.
-LaTeX Font Info:    Trying to load font information for T1+phv on input line 89.
+LaTeX Font Info:    Trying to load font information for T1+phv on input line 95.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
 )
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 9.99591pt on input line 89.
+(Font)              scaled to size 9.99591pt on input line 95.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `phv' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 9.99591pt on input line 89.
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 99.
+(Font)              scaled to size 9.99591pt on input line 95.
+
+
+[4]
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 105.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-Overfull \hbox (227.72163pt too wide) in paragraph at lines 100--106
+Overfull \hbox (227.72163pt too wide) in paragraph at lines 106--112
 \T1/ptm/m/n/12 (-20) the im-age, $\OML/ztmcm/m/it/12 f$ \T1/ptm/m/n/12 (-20) is the cam-era's in-trin-sic fo-cal length, and $\OML/ztmcm/m/it/12 a$ \T1/ptm/m/n/12 (-20) is the F-number. $[]$
  []
 
 
 
-[4 <./IW Fall 2025 Fig. 1 (2).png>]
-<Synthetic Focus Stack Generation Diagram.png, id=83, 1952.29375pt x 939.51pt>
+[5 <./IW Fall 2025 Fig. 1 (2).png>]
+<Synthetic Focus Stack Generation Diagram.png, id=99, 1952.29375pt x 939.51pt>
 File: Synthetic Focus Stack Generation Diagram.png Graphic file (type png)
 <use Synthetic Focus Stack Generation Diagram.png>
-Package pdftex.def Info: Synthetic Focus Stack Generation Diagram.png  used on input line 111.
+Package pdftex.def Info: Synthetic Focus Stack Generation Diagram.png  used on input line 117.
 (pdftex.def)             Requested size: 469.75502pt x 226.06044pt.
 
-
-[5]
 
 [6 <./Synthetic Focus Stack Generation Diagram.png>]
 
@@ -879,41 +880,60 @@ Package pdftex.def Info: Synthetic Focus Stack Generation Diagram.png  used on i
 [8]
 
 [9]
+Overfull \hbox (43.473pt too wide) in paragraph at lines 172--179
+ [][] 
+ []
+
+
 
 [10]
 
 [11]
 
 [12]
-Overfull \hbox (43.473pt too wide) in paragraph at lines 201--208
+
+[13]
+
+[14]
+<DfDNet Architecture.png, id=152, 601.24625pt x 448.67625pt>
+File: DfDNet Architecture.png Graphic file (type png)
+<use DfDNet Architecture.png>
+Package pdftex.def Info: DfDNet Architecture.png  used on input line 216.
+(pdftex.def)             Requested size: 516.73338pt x 385.64182pt.
+
+Overfull \hbox (46.97836pt too wide) in paragraph at lines 216--217
  [][] 
  []
 
 
 
-[13] (./template.bbl)
+[15]
 
-[14] (./template.aux)
+[16 <./DfDNet Architecture.png>]
+
+[17] (./template.bbl)
+
+[18] (./template.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `template.out' has not changed.
-(rerunfilecheck)             Checksum: 650CB79E75D8148859D360A46CF19262;1881.
+(rerunfilecheck)             Checksum: 53DFBE4C8B40ABE84F7297391BB968D4;2185.
  ) 
 Here is how much of TeX's memory you used:
- 26540 strings out of 473190
- 483160 string characters out of 5715801
- 903284 words of memory out of 5000000
- 48971 multiletter control sequences out of 15000+600000
- 637341 words of font info for 305 fonts, out of 8000000 for 9000
+ 26562 strings out of 473190
+ 483555 string characters out of 5715801
+ 903335 words of memory out of 5000000
+ 48982 multiletter control sequences out of 15000+600000
+ 637471 words of font info for 307 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 92i,11n,95p,2737b,625s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on template.pdf (14 pages, 1327780 bytes).
+ 92i,12n,95p,2820b,629s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
+Output written on template.pdf (18 pages, 1448398 bytes).
 PDF statistics:
- 190 PDF objects out of 1000 (max. 8388607)
- 150 compressed objects within 2 object streams
- 34 named destinations out of 1000 (max. 500000)
- 85111 words of extra memory for PDF output out of 89155 (max. 10000000)
+ 229 PDF objects out of 1000 (max. 8388607)
+ 181 compressed objects within 2 object streams
+ 42 named destinations out of 1000 (max. 500000)
+ 85140 words of extra memory for PDF output out of 89155 (max. 10000000)
 
