@@ -1,0 +1,257 @@
+\documentclass[pageno]{jpaper}
+
+% Change to current semester and year, e.g.:
+% \newcommand{\IWreport}{Spring 2020}
+\newcommand{\IWreport}{Fall 2025}
+\newcommand{\quotes}[1]{``#1''}
+
+
+\widowpenalty=9999
+
+\usepackage[normalem]{ulem}
+\usepackage{tikz}
+\usepackage{pifont}
+\usepackage{amsmath}
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
+\newcommand{\xmark}{\ding{55}}%
+
+\begin{document}
+
+\title{
+Transformer-based Monocular Depth Estimation using Defocus Cues}
+
+\author{Venkat Subramanian\\Adviser: Professor Jia Deng}
+
+\date{}
+\maketitle
+
+\thispagestyle{empty}
+\doublespacing
+\begin{abstract}
+This paper details the development of a monocular depth estimation (MDE) machine learning model using defocus cues from a focus stack. Defocus-cue and focus stack based monocular depth estimation, formalized as Depth from Defocus (DfD), 
+utilizes extra signal from camera optics to assist in otherwise ambiguous metric depth estimation. However, DfD has not 
+been recently explored in the context of modern trends in the computer vision community, such as transformer-based model 
+architectures and synthetic data training. The pipeline implemented in this project applies these modern computer vision methods
+to the DfD task to yield state-of-the-art results. In particular, I introduce 
+a novel, memory efficient model architecture for the DfD task and find that this model, when combined with 
+a synthetic data training pipeline, beats prior methods on various evaluation datasets.
+\end{abstract}
+
+
+
+\section{Introduction 1.5}
+
+\quad Depth estimation is a crucial component of many modern augmented reality, robotics, and self-driving tasks. In the case of
+self-driving, understanding 3D geometry of the car's environment of which depth plays an important factor, is critical to 
+to maintaining safety and coordinating driving control. $\textbf{Find self-driving car stats}$. One useful component of furthering depth estimation capabilities in models for real-world applications is 
+monocular depth estimation, or depth estimation using a single camera. Here, monocular depth estimation methods remain 
+widely used for mobile-native applications, as stated in $\textbf{Find sources here}$. $\textbf{Find AR stats}$
+However, many monocular depth estimation AI models suffer from scale ambiguity issues and do not generalize well to unseen data and real-world images. The goal of my
+project is to beat state-of-the-art monocular depth estimation methods using depth from defocus, where a model
+learns to predict the depth of a scene by receiving a set of images with different focus distances of the same 
+scene as input. This particular method of using depth from defocus images is also interesting because jumping 
+spiders are known to use defocus cues to do monocular depth estimation in a manner very similar to the depth 
+from defocus method (Nolte et al.) $\textbf{fix cites}$. Ultimately, depth from defocus offers a cost-effective alternative to modern
+depth estimation methods, and if proven effective when compared to state-of-the-art methods, it can
+serve as a fallback depth estimation solution in autonomous vehicles and robots. DfD can also potentially boost depth estimation performance 
+in "inherently monocular" cases, such as augmented reality applications on mobile devices.
+
+The approach of this paper is to use synthetic training data wherever real, high-quality training data is lacking. We also introduce $\textit{DfDNet}$, a transformer-based
+DfD model architecture motivated by recent trends in computer vision. We deliberately look to mitigate the higher inference times that larger transformer models have when compared to 
+convolutional neural networks (CNNs). We will then compare inference times and performance of DfDNet against other comparable models to show that DfDNet and the training paradigm 
+introduced in this paper offer a competitive datapoint on the Pereto frontier of DfD models.
+
+\section{Background and Related Work 4.5}
+
+\subsection{Monocular Depth Estimation}
+
+Monocular depth estimation is loosely defined as the task of predicting depth of a scene using one camera. MDE is technically split into several branches, but when referring to MDE in this paper, 
+I will specifically reference dense MDE, which means the task for a model is to predict the depth of every pixel from the camera, instead of predicting depth for a subset of pixels, which would be sparse MDE. The term "metric," refers 
+to depth predictions that assign a distance typically in meters, whereas scale-invariant depth prediction refers to depth prediction that has no unit associated with it. Scale-invariant depth predictions from a model only indicate that the 
+model believes that certain points on the scene are a certain multiple closer or farther away from the camera than the other points in the scene, but the absolute "scale" of the entire scene remains unknown.
+
+\textbf{Include diagram of MDE (z axis distance from camera to object)}
+Unfortunately, dense metric MDE in its traditional formulation is fundamentally limited by scale ambiguity of scenes. The issue of scale ambiguity is shown in \textbf{Figure Blank}. 
+In particular, when looking at an image of a scene, a model can never determine with absolute certainty whether an object is small and close to the camera, or large and far away from the camera. 
+Scale-invariant MDE models like DepthAntyhingV2 (\textbf{Cite}) mitigate this by having the model predict scale-invariant depth instead of metric depth. For DepthAnythingV2 depth predictions to be 
+useable in real-world scenarios that require metric depth, the user must know the mean depth of the scene a priori and multiply every scale-invariant depth prediction by that value. Obviously, knowing the precise mean depth of a scene is still hard, so 
+scale-invariant metric models fail to solve the metric MDE problem. Still, the authors of DepthAnythingV2 release both scale-invariant and metric MDE pretrained checkpoints for DepthAnythingV2, where the metric checkpoint is $\textbf{Look up where the metric checkpoint comes from}$
+
+There have also been several recent works (\textbf{Cite MoGe-2, DepthPro, and maybe 1 more}) in metric MDE. These works broadly attempt to bypass the inherent scale ambiguity issue of MDE by training large transformer models with "large-scale training" to have the model implicitly learn 
+to understand the general scale of objects in the real-world. For example, when looking at a scene with a car, a large metric MDE model would understand that the height of cars are generally 1.5-2.5 meters, which allows the model to triangulate how far the car, along with the objects nearby it, are from the camera. 
+DepthPro does this through a separate branch to predict the focal length of the camera taking the image, while MoGe-2 does $\textbf{Find what MoGe does}$. Interesting developments have recently been made in the context of MDE for videos through models like Video Depth Anything, which involve models getting a video in the form of several image frames as input 
+and predicting metric depth for each frame. The intuition for why video models that take several frames as input at a time would perform better than a single-frame metric MDE model applied on each video frame seprately is that depth predictions over a video must have temporal consistency. For instance, a video of a dog running from far away to close to the camera should have a smooth transition of the depth prediction of the dog 
+from far to close, whereas a metric MDE model may slightly mispredict the scale of the scene such that the dog is labeled with a large depth in one frame, a close depth in the next frame, and a far depth again in the next frame, which is temporally inconsistent and characterizes an undesirable phenomena referred to as flickering. We will lean on this intuition of temporal consistency in video metric MDE models and apply it to DfD.
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{IW Fall 2025 Fig. 1 (2).png}
+\caption{This is a gray image.}
+\label{fig:gray}
+\end{figure}
+
+\subsection{Depth from Defocus}
+
+Depth from defocus is a subfield of MDE that relies on defocus, or blur, cues and camera optics to ideally boost depth estimation performance in some settings. In particular, DfD models take in 
+a focus stack, or set of images taken with all intrinsics being held constant and the only difference being the focus distances (FD) that the images were taken with. A key formula dictating the relationship between camera intrinsic parameters, object distance, focus distance, and defocus is the Circle of Confusion (CoC) formula, which is derived from the thin-lens approximation equation:
+
+\begin{equation}
+  \text{CoC} = \frac{|d-d_f|\cdot f^2}{2\cdot a \cdot d \cdot (d_f-f)}
+\end{equation}
+Here, $d$ is the depth of a particular point in the scene projected onto the camera plane, $d_f$ is the FD of the image, $f$ is the camera's intrinsic focal length, and $a$ is the F-number. $\textbf{This paper: https://onlinelibrary.wiley.com/doi/epdf/10.1111/cgf.15214}$ goes onto describe how to approximate the circle of confusion formula using Gaussian convolutions to efficiently generate a focus stack
+for specified focus distances using a ground-truth depth map and all-in-focus image.
+\textbf{Figure 2} shows an example focus stack 
+with different focus distances, where one can notice an object in a scene appears in focus in an image in the focus stack where the FD corresponding to the image matches the ground-truth depth of the object. \textbf{Figure 2} also shows 
+that focus stacks where the only difference is the F-number ($a$) has noticeably fewer defocus cues, meaning that an intuition for DfD is that the larger the aperture opening is (smaller $a$), the greater the defocus cues, and better DfD methods should generally perform over traditional MDE methods.
+
+There is work done previously in the field of depth from defocus. Carvalho et al. shows that a single defocus image can potentially provide better depth cues and improved accuracy for computer vision models than an input being an all-in-focus image. Lu et al. and Si et al. both introduce depth from defocus models that use convolution-based model architectures. Notably, Si et al. released code that they used to generate synthetic focal stacks from all-in-focus images and ground-truth depth maps using the afformentioned Gaussian convolution approximation of the CoC formula, as shown in \textbf{Figure 3}
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{Synthetic Focus Stack Generation Diagram.png}
+\caption{This is a gray image.}
+\label{fig:synthetic-fs-generation}
+\end{figure}
+
+This synthetic focus stack generation method is particularly valuable for scaling the training data of DfD models. Traditional MDE models only require AiF images and corresponding ground-truth depth maps to train, and numerous datasets like Hypersim, ARKitScenes, TartanAir, VKITTI, and others exist meeting this requirement (\textbf{Cite}). However, there are no large-scale training datasets for DfD models since no large dataset exists with focus stacks, focus distances, and ground-truth depth maps. DDFF-12 (\textbf{Cite}) does release a training subset of 400 images of the DDFF-12 dataset meeting these requirements, but 
+we find that the quality of this dataset is low for several reasons. First, there are many holes in the ground-truth depth map. The diversity in the scenes captured in this dataset is also lacking. Furthermore, 400 images is simply not enough to train a modern transformer model. For example, DepthAnythingV2 trains on tens of thousands of images $\textbf{Check this and cite}$, as do other comparable models (\textbf{Cite}). Table $\textbf{BLANK}$ shows the available training datasets in the literature in detail.
+
+\subsection{Transformers}
+
+This project also looks to build upon previous depth from defocus models by introducing a transformer-based (not convolution-based) approach that builds upon the recent shift in computer vision towards vision transformers (Dosovitskiy et al.) and leveraging rich pre-trained backbones from other work (Oquab et al.).
+
+Consider also the recent developments with the encoder-decoder transformer architecture. At a high-level, encoder-decoder models are split into the encoder, which takes an input, patches it into tokens, and transforms those tokens into vectors in a high-dimensional space where similar original tokens are closely aligned embedding vectors of the encoder. Then, the decoder operates on these embedding vectors to make the type of prediction required for the model. A classic encoder-decoder architecture for MDE is that of DepthAnything, which uses the popular DINO encoder ($\textbf{Cite}$) and DPT decoder $\textbf{Cite}$, and the architecture is shown in Figure $\textbf{Blank}$
+
+Transformer models have a large amount of parameters. DepthAnythingV2 had $\textbf{BLANK}$ many parameters, DepthPro has \textbf{BLANK}, and even the convolution-based \textbf{BLANK} models have \textbf{BLANK}. Even with regularization techniques within a model, like dropout and batch normalization $\textbf{Cite}$, and data augmentation techniques, like random cropping, color jitter, and random scaling, the "effective" number of parameters still dwarfs the number of training examples by several orders of magnitude. To avoid the issue of models overfitting to spurious correlations in the training data, which becomes an even more significant issue when attempting to make large transformer models that generalize to unseen datasets, models must see a large amount of diverse data. This motivates the use of a synthetic focus stack generation pipeline, since we want to show our model an amount of data similar to the scale of training data used for recent MDE models. 
+
+\subsection{Existing Datasets}
+
+The monocular depth estimation literature has several key pieces of prior work in regards to training data for new MDE models for both traditional MDE and DfD. Here, we will highlight a few datasets that were considered or are directly relevant for this paper. Hypersim is a diverse indoor synthetic dataset with more than 50,000 training samples. The ground-truth depth values of the Hypersim samples are log-normally distributed with a mean of 5.4 meters $\textbf{Cite}$. ARKitScenes is another indoor dataset with more than 1,000 unique scenes and more than 24,000 training samples. ARKitScenes is a real dataset with ground-truth depth labels collected using the LiDAR scanner of an iPad Pro, whereas Hypersim uses a synthetic computational pipeline to collect depth values of the scenes. TartanAir is a synthetic dataset with more than 250,000 training samples of indoor and outdoor scenes.
+
+To our knowledge, DDFF 12-Scene is the only DfD specific training/evaluation dataset in the literature. It includes 600 training/evaluation samples captured through a lightfield camera in 6 unique scenes where each sample includes a 5-image focus stack with focus distances of 0.5, 0.63, 0.86, 1.33, and 7.06 meters respectively. ~\cite{Maximov:2020} points out, and we concur, that this dataset is extremely challenging, to an extent that makes its challenges unrelated to the DfD task entirely. Many scenes in the dataset include textureless walls and tables, and the images were taken with a wide Depth of Field (DoF) such that there are barely any defocus cues in any of the focus stacks. To provide a better indication of real-world performance, prior DfD papers often synthetically blur higih-quality single image MDE datasets. For this purpose, we consider iBims-1, an indoor dataset with 100 AiF and ground-truth depth pairs. To use this dataset, as with other datasets like NYUDepthV2, prior DfD papers have synthetically blurred the images to obtain a focus stack and passed these into a DfD model. $\textbf{Cite NYUDepthV2 and other papers that have done this}$
+
+\ref{table:training-data} and \ref{table:evaluation-data} give an overview of the training and evaluation datasets considered and used for this paper.
+
+\section{Approach, 1-8, avg 3}
+The focus of this paper will be to show how we architected and trained a DfD model named $\textbf{DfDNet}$ that beats the state-of-the-art on a couple of key evaluation datasets. We will go through the carefully selected training data for this task, pointing out key details regarding preprocessing that can accelerate future MDE work.
+The architecture of DfDNet was carefully constructed. It was motivated, first, by the DepthAnythingV2 model, and subsequent Video Depth Anything model. Both have a DINO encoder and DPT decoder transformer architecture, and the training paradigm of both models in their respective papers is that of large-scale training, indicating that we
+should also follow a similar training paradigm. Video Depth Anything specifically introduces a spatiotemporal head intended for temporal consistency across a set of up to 32 frames in a video at a time, but we choose to use that spatiotemporal head to create defocus aware features earlier in the encoder. We ablate the number of layers until the temporal collapse, 
+the mechanism for the temporal collapse itself, as well as the use of training the model in a canonical, focal-length agnostic space.
+
+
+Given the lack of training data for DfD, and the poor quality of the DDFF12 dataset that we noticed ourselves, and subsequently found to be pointed in other papers $\textbf{Other paper}$, we choose to synthetically generate focus stacks on the synthetic and real training and evaluation data. When looking for training data, we specifically look for large datasets (>5k images) with co-registered
+depth maps and AiF images. We also look for LIDAR-based datasets with relatively complete ground-truth depth maps and little sensor error.
+
+In regards to evaluation data, we choose to evaluate on iBims with synthetic generation due to its high quality AiF images and depth maps, and we use DDFF12 as the only DfD evaluation dataset (though the quality is not very good)
+
+Our hypothesis is that applying machine learning techniques of modern computer vision, like transformers, large-scale synthetic data training, and broadly moving away from architectures that are derived from inductive biases will yield state-of-the-art results and model generalization.
+The main inductive bias that we do include in our model is moving the temporal collapse earlier since features should be defocus cue aware even after a couple of attention blocks, but we back this up with an ablation study.
+
+To summarize our contributions, we: 
+\begin{itemize}
+  \item Introduce a new transformer-based DfD model called DfDNet (moving away from DfD being mostly convolution-based architectures trained on DDFF)
+  \item Highlight high-quality datasets that can be used for training DfD models and specify preprocessing details necessary to make those datasets usable for DfD
+  \item Evaluate on real and synthetic focus stack datasets to show that we beat the state-of-the-art both qualitiatively and quantitatively
+\end{itemize}
+
+
+\section{Implementation, 10}
+
+\subsection{Datasets Used}
+
+\ref{table:training-data} and \ref{table:evaluation-data} give an overview of the datasets considered for this paper. We chose to use Hypersim and ARKitScenes to train DfDNet for three main reasons. First, both datasets contain tens of thousands of training samples, which 
+is on the appropriate order of magnitude for training a deep model. This first criteria also motivates excluding DDFF 12-Scene since it only has a few hundred training samples. The second reason for choosing Hypersim and ARKitScenes is that they both are indoor datasets with  . Diagram BLANK shows the depth distributions of Hypersim and ARKitScenes, which shows that the mean depth of Hypersim and ARKitScenes are both less than 6 meters. On the other hand, TartanAir, as an outdoor dataset, is known to have large depth values as high as greater than 100 meters regularly in its training samples. Training on samples in an outdoor setting poses unique challenges due to the hyperfocal length phenomena (all images in the focus stack appearing like AiF images when objects in the image are sufficiently far away and the focus distance is also large), so we leave training on outdoor datasets to future work and also only evaluate in an indoor setting. The last important criteria for the training datasets are the degree to which there are holes in the ground-truth depth maps. Hypersim has relatively few ground-truth depth map holes since there are only holes for windows or reflective surfaces. ARKitScenes has more holes due to sensor error given that ARKitScenes is a real-world dataset. In both of these cases, we filled the holes with a constant depth value of 1000. We knew we had to fill in the hole values somehow since the Gaussian convolution approximation of the CoC formula during synthetic focus stack generation involves applying a kernel over the entire image, so holes will propagate if we do not handle them carefully. We also noticed that since many of the holes were coming from ambiguous depth labels for the sky, we chose to label the holes with a correspondingly large depth value to distinguish those invalid values from the valid portions of the scene. However, since some reflective surfaces and arbitrary sections of the image were also given no depth value in the datasets due to sensor error and reflectivity, we applied a mask to the predicted depth of the model before applying a loss such that the model is not penalized for wrong depth values in sections of the image that were holes originally. Future work could fill in the holes using depth completion methodsf (cite Omni-DC, etc.) or explicitly filter out images with a sufficiently large portion of the image as invalid to provide a better heuristic.
+
+\begin{table}[hbt]
+  \centering
+  \begin{tabular}{|l|l|l|l|l|} \hline
+    \textbf{Dataset} & \textbf{\# of Samples} & \textbf{Depth Range} & \textbf{Diversity} & \textbf{GT Depth Holes} \\ \hline
+    iBims-1 & 100 & Indoors & \checkmark & Few (sky+reflective) \\ \hline
+    DDFF 12-Eval & 200 & Indoors & \xmark & Many (sensor error) \\ \hline
+  \end{tabular}
+  \caption{Evaluation Datasets}
+  \label{table:evaluation-data}
+\end{table}
+\textbf{CHECK THESE, green for ones we chose and red for ones not chosen}
+
+\subsection{Training Data Diversity and Augmentation}
+Obtaining diversity in the training data was a core motivating principle in training DfDNet. Hypersim and ARKitScenes themselves are both very diverse, both with over 1,000 distinct scenes in various indoor environments. To further augment the training data, we applied a random scaling/zooming in of the images between 1.0 and 1.5. We also applied a 50/50 random flipping of the image horizontally and a random cropping of all images to have the input to the model being 480 x 640. We also applied a random color jitter to all images that randomly adjusts the brightness, contrast, and saturation of the images for the model to be robust to diverse real-world capturing settings. All of these previous data augmentation techniques are identical to the data augmentations done in OMNI-DC. 
+
+We deviated the training augmentation from prior literature in two main ways. 
+
+First, we randomized the F-number to be uniformly randomly selected from [10,11,12,13,14,18, infinity] in training settings where we intended to evaluate on the DDFF 12-Scene evaluation split since the DDFF 12-Scene dataset has an unknown exact F-number, but all that is known is that the DoF is high. When initially training in an F-number 1.4, 4, or 8 setting and evaluating on the DDFF 12-Evaluation set, we found that generalization to DDFF 12-Evaluation was low. This was believed to be because the models were overfitting to look for defocus cues specifically in the F-number setting that they were trained on, so randomizing the F-number in this way forces the model to learn to predict depth well in low defocus settings while also not overfitting to a specific F-number setting. 
+
+The second data augmentation we made was in regards to the focus distance sampling strategy during training. A heuristic for an ideal focus distance sampling strategy is one that generates a focus stack where the images defocus uniformly increases or decreases across the focus stack for any given point. The intuition for this is that a constant step increase or decrease in defocus across the focus stack allows a model to integrate defocus cues across the focus stack in a stable manner. Otherwise, the focus stack would either oversample images where there is limited new defocus information. Consider the following derivation from the CoC formula $\textbf{ref it}$:
+
+\begin{equation}
+  \begin{aligned}
+  &\text{CoC} = \frac{|d-d_f|\cdot f^2}{2\cdot a \cdot d \cdot (d_f-f)} \\
+  &\stackrel{d_f-f \rightarrow d_f \text{ when } f \ll d_f}{\approx}
+  \frac{|d-d_f|\cdot f^2}{2\cdot a \cdot d \cdot d_f} \\
+  & =(\frac{d}{d\cdot d_f} - \frac{d_f}{d\cdot d_f})\cdot \frac{f^2}{2\cdot a} \\
+  & =(\frac{1}{d_f} - \frac{1}{d})\cdot \frac{f^2}{2\cdot a} \\
+  & \text{CoC} \propto (\frac{1}{d_f} - \frac{1}{d})
+  \end{aligned}
+\end{equation}
+
+Thus, for a fixed depth $d$, a uniform step in inverse focus distance ($d_f$) space is approximately a uniform step in defocus space. This approximation breaks down for very small focus distances since we relied on the fact that the focal length is usually around 50 millimeters, whereas focus distance is in meters. Thus, we sample focus distances uniformly in inverse depth, or disparity, space. However, we still have to identify the lower and upper bound in disparity space to interpolate between. We could identify the 5th percentile and 95th percentile ground-truth disparity in the training setting for the lower and upper bound to linearly interpolate between for the sampled focus distances to synthetically generate, but this means that the focus distances themselves serve as a prior that encodes the scale of the scene. In both real-world and evaluation settings, the focus distances sampled in DfD is agnostic to the scene depth, so we instead choose to randomly sample the lower and upper bound for the focus distances. We decided to have $\text{disp}_\text{lower} \sim Unif(0.05, 0.25)$ and $\text{disp}_\text{upper} \sim Unif(1,2)$. The disparity lower bound being uniform between 0.05 and 0.25 means that the maximum sampled focus distance can be anywhere between 4 and 20 meters, which covers the range of indoor scenes. The disparity upper bound being between 1 and 2 means that the depth lower bound for the sampled focus distances is between 0.5 and 1 meter, which seemed to capture the distance of the closest object to the camera in indoor scenes in both the training and evaluation datasets. A potential drawback of this focus distance sampling strategy is that some generated focus stacks do not have any useful defocus cues. For example, an indoor scene where the closest object is actually 4 meters away from the camera but the $\text{disp}_\text{lower} = 0.25$ would have all the sampled focus distances be closer than the closest object in the scene, meaning the entire scene appears out of focus in the entire focus stack. Future work could propose a more sophisticated focus distance sampling strategy that balances scene-agnostic depth sampling to make training appropriately hard while also avoiding afformentioned training samples that are unnecessarily hard. Ideally, this more sophisticated focus distance sampling strategy could be loaded onto a real camera such that focus stacks can be collected programatically in real-world settings, though the sampling strategy we propose here, combined with a model that detects if the focus stack has sufficient defocus cues and resamples the focus stack if not, is probably sufficient.
+
+\begin{table}[hbt]
+  \centering
+  \begin{tabular}{|l|l|l|l|l|l|} \hline
+    \textbf{Dataset} & \textbf{\# of Samples} & \textbf{Depth Range} & \textbf{Diversity} & \textbf{GT Depth Holes} & \textbf{Data Type} \\ \hline
+    Hypersim & 66428 & Indoors & \checkmark & Few (sky+reflective) & AiF image \\ \hline 
+    ARKitScenes & 24647 & Indoors & \checkmark & Many (sensor error) & AiF image \\ \hline 
+    DDFF 12-Scene & 400 & Indoors & \xmark & Many (sensor error) & Focus stack \\ \hline 
+    TartanAir & 279459 & Indoors + Outdoors & \checkmark & None & AiF image \\ \hline
+  \end{tabular}
+  \caption{Training Datasets Considered}
+  \label{table:training-data}
+\end{table}
+
+\begin{itemize}
+  \item Training and evaluation data used and why
+  
+
+  
+
+
+
+  \item Filling in holes, acknowledging sensor error, diverse depth coverage
+  \item FD sampling strategy
+  \item Randomize fnumber, scaling, color jitter, random cropping
+  \item Canonicalization 
+  \item Design diagram (include canonicalization)
+  \item Types of attention in play (temporal attention in motion module, spatial attention in DINO)
+  \item Loss functions
+  
+  
+\end{itemize}
+
+\section{Evaluation, 5.5}
+Notes:
+\begin{itemize}
+  \item iBims-1
+  \item DDFF12
+  \item Chart showing results 
+  \item Table showing results of different modelsCommentary on evaluation data quality
+  \item Inference time chart vs model size
+  \item Inference time vs iBims/DDFF accuracy
+  \item Ablation: number of layers until collapse/temporal fuse method and iBims performance -- 24-32
+  \item Ablation: With and without canonicalization performance 49-96
+  \item Ablation: with and without arkit performance/with and without hypersim performance 49-96
+  \item Ablation: FD sampling strategy
+\end{itemize}
+
+\section{Conclusions, 1.25}
+\begin{itemize}
+  \item 
+\end{itemize}
+
+
+\bstctlcite{bstctl:etal, bstctl:nodash, bstctl:simpurl}
+\bibliographystyle{IEEEtranS}
+\bibliography{references}
+
+\end{document}
+
