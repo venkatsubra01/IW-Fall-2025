@@ -12,9 +12,14 @@
 \usepackage{tikz}
 \usepackage{pifont}
 \usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
 \DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
 \def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
 \newcommand{\xmark}{\ding{55}}%
+\newcommand{\TopH}{0.22\textheight}  % adjust if needed
+\newcommand{\RowH}{0.2\textheight}  % adjust if needed
+\newcommand{\RowGap}{2mm}
 
 \begin{document}
 
@@ -257,25 +262,398 @@ where $\nabla_x R_i^k$ is the difference between the prediction and target in th
 Here, $\alpha$ and $\beta$ are both tunable hyperparameters for balancing both loss terms.
 
 \section{Evaluation, 5.5}
+\subsection{Evaluation Datasets}
 \begin{table}[hbt]
   \centering
-  \begin{tabular}{|l|l|l|l|l|} \hline
-    \textbf{Dataset} & \textbf{\# of Samples} & \textbf{Depth Range} & \textbf{Diversity} & \textbf{GT Depth Holes} \\ \hline
-    iBims-1 & 100 & Indoors & \checkmark & Few (sky+reflective) \\ \hline
-    DDFF 12-Eval & 200 & Indoors & \xmark & Many (sensor error) \\ \hline
+  \begin{tabular}{|l|l|l|l|} \hline
+    \textbf{Dataset} & \textbf{\# of Samples} & \textbf{Depth Range} & \textbf{GT Depth Holes} \\ \hline
+    iBims-1 & 100 & Indoors & Few (sky+reflective) \\ \hline
+    DDFF 12-Eval & 200 & Indoors & Many (sensor error) \\ \hline
   \end{tabular}
   \caption{Evaluation Datasets}
   \label{table:evaluation-data}
 \end{table}
+
+We evaluated on two datasets: iBims-1 and the evaluation split of DDFF 12. \ref{table:evaluation-data} shows a comparison between the two, and \textbf{BLANK} shows a qualitative comparison of the data between the two. There are a few keypoints to note with these datasets. Both are indoor datasets with almost all depth values being less than 10 meters, as shown in the depth distribution graphs in BLANK. You can see that the depth range for DDFF 12-Evaluation set is noticeably closer than that of iBims-1. DDFF-12 also has real focus stacks with ground-truth depth labels, but the quality of the ground-truth depth maps are low due to holes and sensor error, and the scenes were shot with a high DoF such that the focus stacks have very little defocus cues. We qualitatively estimated that the F-number of the DDFF-12 focus stacks were around 12. To provide a better evaluation of our method, we report numbers on iBims-1, where we synthetically generate focus stacks with an F-number 1.4 for DfD methods, and passs in the AiF image into DepthAnythingV2 as a baseline.
+
+
+\subsection{Experiments Run}
+
+\begin{table}[hbt]
+  \centering
+  \begin{tabular}{|l|l||} \hline
+    \textbf{Hyperparameter} & \textbf{Value} \\ \hline
+    $\lambda$ (SiLog Loss) & 0.5 \\ \hline
+    $\alpha$ & 1 \\ \hline 
+    $\beta$ & 0.1 \\ \hline 
+    Batch Size & 2 \\ \hline
+    Maximum Number of Epochs & 120 \\ \hline 
+    Learning Rate & 0.000005 \\ \hline
+    GM Loss Scale Level & 2 \\ \hline
+  \end{tabular}
+  \caption{Hyperparameters}
+  \label{table:hyperparams}
+\end{table}
+
+We ran all experiments with the hyperparameters shown in \ref{table:hyperparams}. All experiments were run on either 5 RTX 3090s, 5 A1000s, 5 L40s, or 5 A40s. Here, we show the results of a couple of state-of-the-art models and DfDNet on the iBims-1 dataset. This setting was specifically with a noticeably significant level of defocus across the focus stack with an F-number of 1.4 used to synthetically generate the focus stacks. The focus distance list used to generate the focus stacks is shown in two different settings. 1 setting is a ground-truth depth dependent FD list sampling where the minimum FD sampled is the 5th\% depth and maximum FD sampled is the 95th\% depth and 3 more values are sampled linearly in disparity space for a total of 5 values. 
+The second FD sampling scheme is a constant 0.5, 0.63, 0.86, 1.33, and 7.06, which we will refer to  as "Depth Dependent FD Sampling". Diagram \ref{fig:FD-sampling-comparison} shows how the focus stacks differ for an example iBims-1 scenes depending on the FD sampling strategy used. One can notice that the Depth-Dependent FD sampling scheme implicitly encodes the ground-truth depth scale within the FD list, whereas the fixed FD list scheme does not.
+
+
+\begin{figure*}[t]
+\centering
+
+% --- Row 1 (2 cols) ---
+\begin{subfigure}[b]{0.49\textwidth}
+  \centering
+  \includegraphics[height=\RowH, width=\linewidth, keepaspectratio]{dd-0722.png}
+  \caption{Depth-Dependent, First Image in FS, FD 0.722m}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.49\textwidth}
+  \centering
+  \includegraphics[height=\RowH, width=\linewidth, keepaspectratio]{fixed-fd-0500.png}
+  \caption{Fixed FD, First Image in FS, FD 0.5m}
+\end{subfigure}
+
+\vspace{\RowGap}
+
+% --- Row 2 (2 cols) ---
+\begin{subfigure}[b]{0.49\textwidth}
+  \centering
+  \includegraphics[height=\RowH, width=\linewidth, keepaspectratio]{dd-1.01.png}
+  \caption{Depth-Dependent, 3rd Image in FS, FD 1.01m}
+\end{subfigure}
+\begin{subfigure}[b]{0.49\textwidth}
+  \centering
+  \includegraphics[height=\RowH, width=\linewidth, keepaspectratio]{fixed-fd-086.png}
+  \caption{Fixed FD, 3rd Image in FS, 7.06m}
+\end{subfigure}\hfill
+
+
+\vspace{\RowGap}
+
+% --- Row 3 (2 cols) ---
+\begin{subfigure}[b]{0.49\textwidth}
+  \centering
+  \includegraphics[height=\RowH, width=\linewidth, keepaspectratio]{dd-167.png}
+  \caption{Depth-Dependent, 3rd Image in FS, FD 1.67m}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.49\textwidth}
+  \centering
+  \includegraphics[height=\RowH, width=\linewidth, keepaspectratio]{fixed-fd-706.png}
+  \caption{Fixed FD, 5th Image in FS, 0.86m}
+\end{subfigure}
+
+\caption{FD Sampling Comparison on iBims, GT Depth Range: 0.3m to 2.03m}
+\label{fig:FD-sampling-comparison}
+\end{figure*}
+
+
+We run three evaluation settings. 
+
+The first is the iBims depth-dependent FD sampling scheme with an F-number 1.4 used for synthesizing the focus stack for the DfD methods. You can see that in this setting, DfDNet achieves the best performance.
+
+\begin{table}[hbt]
+  \centering
+  \begin{tabular}{|l|l|l|l|l|} \hline
+    \textbf{Model} & $\mathbf{\delta_1} \uparrow$ & AbsRel $\downarrow$ \\ \hline
+    DepthAnythingV2-ViTS & 0.787 & 0.164 \\ \hline
+    DFF-DFV & 0.786 & 0.160 \\ \hline
+    DfDNet & 0.989 & 0.042 \\ \hline
+  \end{tabular}
+  \caption{Evaluation on iBims Depth-Dependent FD Sampling, F-Number 1.4}
+  \label{table:iBims-eval-depth-dependent-fnum-1.4}
+\end{table}
+
+
+
+% column width for 6 across (tweak slightly if your template is tight)
+\newcommand{\cwone}{0.19\textwidth}
+
+% header cell helper
+\newcommand{\colheaderone}[1]{%
+  \begin{minipage}[b]{\cwone}\centering\small #1\end{minipage}%
+}
+
+\begin{figure*}[t]
+\centering
+
+% ---------- Column headers (top text) ----------
+\colheaderone{AiF Image}\hfill
+\colheaderone{GT Depth}\hfill
+\colheaderone{DepthAnythingV2}\hfill
+\colheaderone{DFF-DFV}\hfill
+\colheaderone{DfDNet High-Defocus}\hfill
+\vspace{1mm}
+
+% ---------- Row 1 (exactly same as Row 2) ----------
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-1.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-1-gt.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-dav2-1.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-dfv-1.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-dfdnet-1.png}
+\end{subfigure}\hfill
+
+\vspace{2mm}
+
+% ---------- Row 2 ----------
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-28.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-28-gt.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-dav2-28.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-dfv-28.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-dfdnet-28.png}
+\end{subfigure}\hfill
+
+\vspace{2mm}
+
+% ---------- Row 3  ----------
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-88.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-88-gt.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-dav2-88.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-dfv-88.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-dfdnet-88.png}
+\end{subfigure}\hfill
+
+\caption{Qualitative Comparison on iBims Depth-Dependent FD Samples 1, 28, and 88}
+\label{fig:ibims-dd-fd-qual}
+\end{figure*}
+
+
+
+
+
+The second is the iBims fixed FD sampling scheme with an F-number 1.4 used for synthesizing the focus stack for the DfD methods. Even though the DfDNet configuration is the exact same as that in the prior experiment, and that DfDNet configuration was trained in a depth-dependent FD setting, the model still shows good generalization to the fixed FD sampling setting. Additionally, the poor performance of DFF-DFV in this setting indicates that since the model was trained in high defocus settings where the FD of the focus stack may have been implicitly indicating the scale of the scene, either the high blur effects or lack of the FD list in giving away the scale of the scene causes the DFF-DFV model to break down.
+
+
+\begin{table}[hbt]
+  \centering
+  \begin{tabular}{|l|l|l|l|l|} \hline
+    \textbf{Model} & $\mathbf{\delta_1} \uparrow$ & AbsRel $\downarrow$ \\ \hline
+    DepthAnythingV2-ViTS & 0.787 & 0.164 \\ \hline
+    DFF-DFV & 0.404 & 0.476 \\ \hline
+    DfDNet & 0.900 & 0.112 \\ \hline
+  \end{tabular}
+  \caption{Evaluation on iBims Fixed FD Sampling, F-Number 1.4}
+  \label{table:iBims-eval-fixed-fd-fnum-1.4}
+\end{table}
+
+\begin{figure*}[t]
+\centering
+
+% ---------- Column headers (top text) ----------
+\colheaderone{AiF Image}\hfill
+\colheaderone{GT Depth}\hfill
+\colheaderone{DepthAnythingV2}\hfill
+\colheaderone{DFF-DFV}\hfill
+\colheaderone{DfDNet High-Defocus}\hfill
+\vspace{1mm}
+
+% ---------- Row 1 (exactly same as Row 2) ----------
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-1.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-1-gt.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-dav2-1.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-fixed-dfv-1-new.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-fixed-dfdnet-1.png}
+\end{subfigure}\hfill
+
+\vspace{2mm}
+
+% ---------- Row 2 ----------
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-28.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-28-gt.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-dav2-28.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-fixed-dfv-28.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-fixed-dfdnet-28.png}
+\end{subfigure}\hfill
+
+\vspace{2mm}
+
+% ---------- Row 3  ----------
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-88.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-88-gt.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-dd-dav2-88.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-fixed-dfv-88.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwone}\centering
+  \includegraphics[width=\linewidth]{ibims-fixed-dfdnet-88.png}
+\end{subfigure}\hfill
+
+\caption{Qualitative Comparison on iBims Fixed FD Samples 1, 7, and 88}
+\label{fig:ibims-fixed-fd-qual}
+\end{figure*}
+
+
+The last is the DDFF-12 evaluation split that is identical to the one reported in the DFV paper. Results are shown in \ref{table:ddff-12}. The input to DepthAnythingV2, MoGe-2, and DepthPro were all the first image in the focus stack without any camera intrinsics. We chose the first image in the focus stack since the focus stacks have very little defocus cues anyway, so any arbitrary image in the focus stack effectively serves as a near AiF image. We could have stopped right when we showed that the numbers that MoGe-2 got were better than that of DFF-DFV, which indicates that this evaluation split is more of a single-view, AiF MDE problem than a DfD problem. However, we wanted to show that DfDNet can also achieve good performance in very low defocus settings by augmenting the training data. To do this, we leaned on a few principles from single-view MDE model training. First, we scaled up the training data to add ARKitScenes, which is a real-world dataset that has generally closer depth values than Hypersim, which we thought would align the training data closer to the DDFF evaluation split. We also trained the DfDNet model specifically for low defocus settings with a random F-number selected for each sample from [10, 11, 12, 13, 14, 18, float("inf")]. We also canonicalized the training data to solve ambiguity regarding FoV. We report the numbers of this DfDNet model with random scaling turned on, denoted as DfDNet-low-defocus-random-scaling, as well as with random scaling turned off, denoted as DfDNet-no-random-scaling. Lastly, we made the training longer for DfDNet in this setting, increasing the number of training epochs to 80, since the effectively single-view MDE problem is a harder problem than that of DfD, so more training makes sense. We included this set of DfDNet experiments not to show that DfDNet should be used in settings with low defocus in its current stage; users should probably lean on single-view MDE methods like MoGe-2 or DepthPro in those settings. However, these experiments do show that DfDNet can achieve good performance in low defocus settings when the training data is sufficiently augmented, which future work can extend on, and it also shows that the DDFF-12 evaluation split is not ideal for evaluating DfD methods.
+
+\begin{table}[hbt]
+  \centering
+  \begin{tabular}{|l|l|l|} \hline
+    \textbf{Model} & $\mathbf{\delta_1} \uparrow$ & AbsRel $\downarrow$ \\ \hline
+    DepthAnythingV2-ViTS & 0.355 & 0.437 \\ \hline
+    DFF-DFV & 0.767 & 0.174 \\ \hline
+    DfDNet-random-scaling & 0.573 & 0.286 \\ \hline
+    DfDNet-no-random-scaling & 0.723 & 0.171 \\ \hline
+    MoGe-2 - no-intrinsics & 0.787 & 0.164 \\ \hline 
+    DepthPro & 0.756 & 0.198 \\ \hline
+  \end{tabular}
+  \caption{Evaluation on DDFF-12 Evaluation Set}
+  \label{table:ddff-12}
+\end{table}
+
+
+% width for 7 columns across (tweak if tight)
+\newcommand{\cwtwo}{0.135\textwidth}
+
+% header helper
+\newcommand{\colheadertwo}[1]{%
+  \begin{minipage}[b]{\cwtwo}\centering\scriptsize #1\end{minipage}%
+}
+
+\begin{figure*}[t]
+\centering
+
+% -------------------- Top header row --------------------
+\colheadertwo{Near-AiF Image\\(First in FS)}\hfill
+\colheadertwo{GT Depth}\hfill
+\colheadertwo{DepthAnythingV2}\hfill
+\colheadertwo{DepthPro}\hfill
+\colheadertwo{MoGe-2}\hfill
+\colheadertwo{DFF-DFV}\hfill
+\colheadertwo{DfDNet\\Low Defocus}
+
+\vspace{1mm}
+
+% -------------------- Image Row 1 (copy of Row 2) --------------------
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-sample-1.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-sample-1-gt1.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{dav2-ddff-1.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{depthpro-ddff-1.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{moge-ddff-1.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{dff-dfv-ddff1.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{dfd-net-low-defocus-random-scaling-1.png}
+\end{subfigure}
+
+\vspace{2mm}
+
+% -------------------- Image Row 2 --------------------
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-2.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-2-gt.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-dav2-2.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-depthpro-2.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-moge-2.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-dfv-2.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-dfdnet-2.png}
+\end{subfigure}
+
+\vspace{2mm}
+
+% -------------------- Image Row 3 --------------------
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-sample-7.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-sample-7-gt.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-dav2-7.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-depthpro-7.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-moge-7.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-dfv-7.png}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{\cwtwo}\centering
+  \includegraphics[width=\linewidth]{ddff-dfd-net-7.png}
+\end{subfigure}
+
+\caption{Qualitative Comparison on DDFF Sample 1, 2, and 7}
+\label{fig:ddff-qual-comparison-1}
+\end{figure*}
+
 Notes:
 \begin{itemize}
-  \item Experiments that were run
-  \item iBims-1
-  \item DDFF12
-  \item Chart showing results 
-  \item Table showing results of different modelsCommentary on evaluation data quality
-  \item Inference time chart vs model size
-  \item Inference time vs iBims/DDFF accuracy
+  \item Inference time chart
   \item Ablation: number of layers until collapse/temporal fuse method and iBims performance -- 24-32
   \item Ablation: With and without canonicalization performance 49-96
   \item Ablation: with and without arkit performance/with and without hypersim performance 49-96
@@ -284,7 +662,7 @@ Notes:
 
 \section{Conclusions, 1.25}
 \begin{itemize}
-  \item 
+  \item Future work: FD sampling strategy, outdoor setting, more training datasets, unified model for all F numbers and evaluation settings, better real world benchmark
 \end{itemize}
 
 
