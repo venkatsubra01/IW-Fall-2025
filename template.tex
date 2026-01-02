@@ -651,14 +651,35 @@ The last is the DDFF-12 evaluation split that is identical to the one reported i
 \label{fig:ddff-qual-comparison-1}
 \end{figure*}
 
-Notes:
-\begin{itemize}
-  \item Inference time chart
-  \item Ablation: number of layers until collapse/temporal fuse method and iBims performance -- 24-32
-  \item Ablation: With and without canonicalization performance 49-96
-  \item Ablation: with and without arkit performance/with and without hypersim performance 49-96
-  \item Ablation: FD sampling strategy
-\end{itemize}
+\subsection{Ablation Studies}
+
+We ran ablations on several more components of the DfDNet model, including the training with and without ARKitScenes for the low defocus setting, the FD sampling strategy, using canonicalization, and others, but we choose to an ablation on the number of layers until collapse and the temporal fuse method here for space.
+
+\begin{table}[hbt]
+  \centering
+  \begin{tabular}{|l|l|l|l|l|} \hline
+    \textbf{Model} & $\mathbf{\delta_1} \uparrow$ & AbsRel $\downarrow$ \\ \hline
+    DfDNet-2-mean & 0.989 & 0.033 \\ \hline
+    DfDNet-4-mean & 0.963 & 0.054\\ \hline
+    DfDNet-6-mean & 0.990 & 0.031 \\ \hline
+    DfDNet-2-max & 0.955 & 0.065 \\ \hline
+    DfDNet-4-max & 0.914 & 0.090 \\ \hline
+    DfDNet-6-max & 0.953 & 0.053 \\ \hline
+  \end{tabular}
+  \caption{Ablation on Temporal Collapse Method and Number of Layers Until Collapse}
+  \label{table:temporal-collapse-method-table}
+\end{table}
+
+These results indicate that using average pooling as the temporal collapse mechanism performs better than using max pooling under the evaluation setting of leaving holes in iBims marked with depth values of 1000m when generating the focus stack and doing depth-dependent FD sampling. It is worth noting that this ablation was run earlier on in the project's progress, and we later switched to using a depth completion method to fill in the holes to provide better focus stack synthesis, which is why the DfDNet-2-mean AbsRel reported in \ref{table:temporal-collapse-method-table} is slightly different than the numbers reported in \ref{table:iBims-eval-depth-dependent-fnum-1.4}.
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=0.75\linewidth]{absrel_delta1_bubble_chart_legends_panel.png}
+\caption{This is a gray image.}
+\label{fig:num-layers-until-collapse-ablation}
+\end{figure}
+
+
 
 \section{Conclusions, 1.25}
 \begin{itemize}

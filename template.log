@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  2 JAN 2026 16:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  2 JAN 2026 18:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -826,7 +826,7 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
 [2]
 
 [3]
-<IW Fall 2025 Fig. 1 (2).png, id=91, 1003.75pt x 460.72125pt>
+<IW Fall 2025 Fig. 1 (2).png, id=95, 1003.75pt x 460.72125pt>
 File: IW Fall 2025 Fig. 1 (2).png Graphic file (type png)
 <use IW Fall 2025 Fig. 1 (2).png>
 Package pdftex.def Info: IW Fall 2025 Fig. 1 (2).png  used on input line 100.
@@ -857,7 +857,7 @@ Overfull \hbox (227.72163pt too wide) in paragraph at lines 112--118
 
 
 [5 <./IW Fall 2025 Fig. 1 (2).png>]
-<Synthetic Focus Stack Generation Diagram.png, id=107, 1952.29375pt x 939.51pt>
+<Synthetic Focus Stack Generation Diagram.png, id=111, 1952.29375pt x 939.51pt>
 File: Synthetic Focus Stack Generation Diagram.png Graphic file (type png)
 <use Synthetic Focus Stack Generation Diagram.png>
 Package pdftex.def Info: Synthetic Focus Stack Generation Diagram.png  used on input line 123.
@@ -886,7 +886,7 @@ Overfull \hbox (43.473pt too wide) in paragraph at lines 178--185
 [13]
 
 [14]
-<DfDNet Architecture.png, id=160, 617.30624pt x 468.75125pt>
+<DfDNet Architecture.png, id=165, 617.30624pt x 468.75125pt>
 File: DfDNet Architecture.png Graphic file (type png)
 <use DfDNet Architecture.png>
 Package pdftex.def Info: DfDNet Architecture.png  used on input line 222.
@@ -905,109 +905,109 @@ Overfull \hbox (46.97836pt too wide) in paragraph at lines 222--223
 [17]
 
 [18]
-<dd-0722.png, id=189, 642.4pt x 481.8pt>
+<dd-0722.png, id=193, 642.4pt x 481.8pt>
 File: dd-0722.png Graphic file (type png)
 <use dd-0722.png>
 Package pdftex.def Info: dd-0722.png  used on input line 308.
 (pdftex.def)             Requested size: 173.4405pt x 130.08038pt.
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
 (Font)              scaled to size 9.12126pt on input line 309.
-<fixed-fd-0500.png, id=190, 642.4pt x 481.8pt>
+<fixed-fd-0500.png, id=194, 642.4pt x 481.8pt>
 File: fixed-fd-0500.png Graphic file (type png)
 <use fixed-fd-0500.png>
 Package pdftex.def Info: fixed-fd-0500.png  used on input line 313.
 (pdftex.def)             Requested size: 173.4405pt x 130.08038pt.
-<dd-1.01.png, id=191, 642.4pt x 481.8pt>
+<dd-1.01.png, id=195, 642.4pt x 481.8pt>
 File: dd-1.01.png Graphic file (type png)
 <use dd-1.01.png>
 Package pdftex.def Info: dd-1.01.png  used on input line 322.
 (pdftex.def)             Requested size: 173.4405pt x 130.08038pt.
-<fixed-fd-086.png, id=192, 642.4pt x 481.8pt>
+<fixed-fd-086.png, id=196, 642.4pt x 481.8pt>
 File: fixed-fd-086.png Graphic file (type png)
 <use fixed-fd-086.png>
 Package pdftex.def Info: fixed-fd-086.png  used on input line 327.
 (pdftex.def)             Requested size: 173.4405pt x 130.08038pt.
-<dd-167.png, id=193, 642.4pt x 481.8pt>
+<dd-167.png, id=197, 642.4pt x 481.8pt>
 File: dd-167.png Graphic file (type png)
 <use dd-167.png>
 Package pdftex.def Info: dd-167.png  used on input line 337.
 (pdftex.def)             Requested size: 173.4405pt x 130.08038pt.
-<fixed-fd-706.png, id=194, 642.4pt x 481.8pt>
+<fixed-fd-706.png, id=198, 642.4pt x 481.8pt>
 File: fixed-fd-706.png Graphic file (type png)
 <use fixed-fd-706.png>
 Package pdftex.def Info: fixed-fd-706.png  used on input line 342.
 (pdftex.def)             Requested size: 173.4405pt x 130.08038pt.
-<ibims-dd-1.png, id=195, 642.4pt x 481.8pt>
+<ibims-dd-1.png, id=199, 642.4pt x 481.8pt>
 File: ibims-dd-1.png Graphic file (type png)
 <use ibims-dd-1.png>
 Package pdftex.def Info: ibims-dd-1.png  used on input line 390.
 (pdftex.def)             Requested size: 89.2546pt x 66.93692pt.
-<ibims-dd-1-gt.png, id=196, 560.0925pt x 418.56375pt>
+<ibims-dd-1-gt.png, id=200, 560.0925pt x 418.56375pt>
 File: ibims-dd-1-gt.png Graphic file (type png)
 <use ibims-dd-1-gt.png>
 Package pdftex.def Info: ibims-dd-1-gt.png  used on input line 393.
 (pdftex.def)             Requested size: 89.2546pt x 66.69693pt.
-<ibims-dd-dav2-1.png, id=197, 560.0925pt x 419.5675pt>
+<ibims-dd-dav2-1.png, id=201, 560.0925pt x 419.5675pt>
 File: ibims-dd-dav2-1.png Graphic file (type png)
 <use ibims-dd-dav2-1.png>
 Package pdftex.def Info: ibims-dd-dav2-1.png  used on input line 396.
 (pdftex.def)             Requested size: 89.2546pt x 66.85687pt.
-<ibims-dd-dfv-1.png, id=198, 561.09625pt x 419.5675pt>
+<ibims-dd-dfv-1.png, id=202, 561.09625pt x 419.5675pt>
 File: ibims-dd-dfv-1.png Graphic file (type png)
 <use ibims-dd-dfv-1.png>
 Package pdftex.def Info: ibims-dd-dfv-1.png  used on input line 399.
 (pdftex.def)             Requested size: 89.2546pt x 66.73523pt.
-<ibims-dd-dfdnet-1.png, id=199, 560.0925pt x 419.5675pt>
+<ibims-dd-dfdnet-1.png, id=203, 560.0925pt x 419.5675pt>
 File: ibims-dd-dfdnet-1.png Graphic file (type png)
 <use ibims-dd-dfdnet-1.png>
 Package pdftex.def Info: ibims-dd-dfdnet-1.png  used on input line 402.
 (pdftex.def)             Requested size: 89.2546pt x 66.85687pt.
-<ibims-dd-28.png, id=200, 788.9475pt x 591.20876pt>
+<ibims-dd-28.png, id=204, 788.9475pt x 591.20876pt>
 File: ibims-dd-28.png Graphic file (type png)
 <use ibims-dd-28.png>
 Package pdftex.def Info: ibims-dd-28.png  used on input line 409.
 (pdftex.def)             Requested size: 89.2546pt x 66.88248pt.
-<ibims-dd-28-gt.png, id=201, 561.09625pt x 422.57875pt>
+<ibims-dd-28-gt.png, id=205, 561.09625pt x 422.57875pt>
 File: ibims-dd-28-gt.png Graphic file (type png)
 <use ibims-dd-28-gt.png>
 Package pdftex.def Info: ibims-dd-28-gt.png  used on input line 412.
 (pdftex.def)             Requested size: 89.2546pt x 67.2142pt.
-<ibims-dd-dav2-28.png, id=202, 618.31pt x 464.73625pt>
+<ibims-dd-dav2-28.png, id=206, 618.31pt x 464.73625pt>
 File: ibims-dd-dav2-28.png Graphic file (type png)
 <use ibims-dd-dav2-28.png>
 Package pdftex.def Info: ibims-dd-dav2-28.png  used on input line 415.
 (pdftex.def)             Requested size: 89.2546pt x 67.08365pt.
-<ibims-dd-dfv-28.png, id=203, 560.0925pt x 420.57124pt>
+<ibims-dd-dfv-28.png, id=207, 560.0925pt x 420.57124pt>
 File: ibims-dd-dfv-28.png Graphic file (type png)
 <use ibims-dd-dfv-28.png>
 Package pdftex.def Info: ibims-dd-dfv-28.png  used on input line 418.
 (pdftex.def)             Requested size: 89.2546pt x 67.01682pt.
-<ibims-dd-dfdnet-28.png, id=204, 560.0925pt x 419.5675pt>
+<ibims-dd-dfdnet-28.png, id=208, 560.0925pt x 419.5675pt>
 File: ibims-dd-dfdnet-28.png Graphic file (type png)
 <use ibims-dd-dfdnet-28.png>
 Package pdftex.def Info: ibims-dd-dfdnet-28.png  used on input line 421.
 (pdftex.def)             Requested size: 89.2546pt x 66.85687pt.
-<ibims-dd-88.png, id=205, 642.4pt x 481.8pt>
+<ibims-dd-88.png, id=209, 642.4pt x 481.8pt>
 File: ibims-dd-88.png Graphic file (type png)
 <use ibims-dd-88.png>
 Package pdftex.def Info: ibims-dd-88.png  used on input line 428.
 (pdftex.def)             Requested size: 89.2546pt x 66.93692pt.
-<ibims-dd-88-gt.png, id=206, 619.31375pt x 463.7325pt>
+<ibims-dd-88-gt.png, id=210, 619.31375pt x 463.7325pt>
 File: ibims-dd-88-gt.png Graphic file (type png)
 <use ibims-dd-88-gt.png>
 Package pdftex.def Info: ibims-dd-88-gt.png  used on input line 431.
 (pdftex.def)             Requested size: 89.2546pt x 66.83261pt.
-<ibims-dd-dav2-88.png, id=207, 618.31pt x 462.72874pt>
+<ibims-dd-dav2-88.png, id=211, 618.31pt x 462.72874pt>
 File: ibims-dd-dav2-88.png Graphic file (type png)
 <use ibims-dd-dav2-88.png>
 Package pdftex.def Info: ibims-dd-dav2-88.png  used on input line 434.
 (pdftex.def)             Requested size: 89.2546pt x 66.79387pt.
-<ibims-dd-dfv-88.png, id=208, 558.085pt x 420.57124pt>
+<ibims-dd-dfv-88.png, id=212, 558.085pt x 420.57124pt>
 File: ibims-dd-dfv-88.png Graphic file (type png)
 <use ibims-dd-dfv-88.png>
 Package pdftex.def Info: ibims-dd-dfv-88.png  used on input line 437.
 (pdftex.def)             Requested size: 89.2546pt x 67.26068pt.
-<ibims-dd-dfdnet-88.png, id=209, 559.08875pt x 420.57124pt>
+<ibims-dd-dfdnet-88.png, id=213, 559.08875pt x 420.57124pt>
 File: ibims-dd-dfdnet-88.png Graphic file (type png)
 <use ibims-dd-dfdnet-88.png>
 Package pdftex.def Info: ibims-dd-dfdnet-88.png  used on input line 440.
@@ -1027,12 +1027,12 @@ File: ibims-dd-dav2-1.png Graphic file (type png)
 <use ibims-dd-dav2-1.png>
 Package pdftex.def Info: ibims-dd-dav2-1.png  used on input line 485.
 (pdftex.def)             Requested size: 89.2546pt x 66.85687pt.
-<ibims-fixed-dfv-1-new.png, id=217, 560.0925pt x 420.57124pt>
+<ibims-fixed-dfv-1-new.png, id=221, 560.0925pt x 420.57124pt>
 File: ibims-fixed-dfv-1-new.png Graphic file (type png)
 <use ibims-fixed-dfv-1-new.png>
 Package pdftex.def Info: ibims-fixed-dfv-1-new.png  used on input line 488.
 (pdftex.def)             Requested size: 89.2546pt x 67.01682pt.
-<ibims-fixed-dfdnet-1.png, id=218, 560.0925pt x 417.56pt>
+<ibims-fixed-dfdnet-1.png, id=222, 560.0925pt x 417.56pt>
 File: ibims-fixed-dfdnet-1.png Graphic file (type png)
 <use ibims-fixed-dfdnet-1.png>
 Package pdftex.def Info: ibims-fixed-dfdnet-1.png  used on input line 491.
@@ -1049,12 +1049,12 @@ File: ibims-dd-dav2-28.png Graphic file (type png)
 <use ibims-dd-dav2-28.png>
 Package pdftex.def Info: ibims-dd-dav2-28.png  used on input line 504.
 (pdftex.def)             Requested size: 89.2546pt x 67.08365pt.
-<ibims-fixed-dfv-28.png, id=219, 561.09625pt x 419.5675pt>
+<ibims-fixed-dfv-28.png, id=223, 561.09625pt x 419.5675pt>
 File: ibims-fixed-dfv-28.png Graphic file (type png)
 <use ibims-fixed-dfv-28.png>
 Package pdftex.def Info: ibims-fixed-dfv-28.png  used on input line 507.
 (pdftex.def)             Requested size: 89.2546pt x 66.73523pt.
-<ibims-fixed-dfdnet-28.png, id=220, 560.0925pt x 420.57124pt>
+<ibims-fixed-dfdnet-28.png, id=224, 560.0925pt x 420.57124pt>
 File: ibims-fixed-dfdnet-28.png Graphic file (type png)
 <use ibims-fixed-dfdnet-28.png>
 Package pdftex.def Info: ibims-fixed-dfdnet-28.png  used on input line 510.
@@ -1071,12 +1071,12 @@ File: ibims-dd-dav2-88.png Graphic file (type png)
 <use ibims-dd-dav2-88.png>
 Package pdftex.def Info: ibims-dd-dav2-88.png  used on input line 523.
 (pdftex.def)             Requested size: 89.2546pt x 66.79387pt.
-<ibims-fixed-dfv-88.png, id=221, 562.1pt x 421.575pt>
+<ibims-fixed-dfv-88.png, id=225, 562.1pt x 421.575pt>
 File: ibims-fixed-dfv-88.png Graphic file (type png)
 <use ibims-fixed-dfv-88.png>
 Package pdftex.def Info: ibims-fixed-dfv-88.png  used on input line 526.
 (pdftex.def)             Requested size: 89.2546pt x 66.93875pt.
-<ibims-fixed-dfdnet-88.png, id=222, 561.09625pt x 421.575pt>
+<ibims-fixed-dfdnet-88.png, id=226, 561.09625pt x 421.575pt>
 File: ibims-fixed-dfdnet-88.png Graphic file (type png)
 <use ibims-fixed-dfdnet-88.png>
 Package pdftex.def Info: ibims-fixed-dfdnet-88.png  used on input line 529.
@@ -1086,136 +1086,144 @@ Package pdftex.def Info: ibims-fixed-dfdnet-88.png  used on input line 529.
 [20 <./dd-0722.png> <./fixed-fd-0500.png> <./dd-1.01.png> <./fixed-fd-086.png> <./dd-167.png> <./fixed-fd-706.png>]
 
 [21 <./ibims-dd-1.png> <./ibims-dd-1-gt.png> <./ibims-dd-dav2-1.png> <./ibims-dd-dfv-1.png> <./ibims-dd-dfdnet-1.png> <./ibims-dd-28.png> <./ibims-dd-28-gt.png> <./ibims-dd-dav2-28.png> <./ibims-dd-dfv-28.png> <./ibims-dd-dfdnet-28.png> <./ibims-dd-88.png> <./ibims-dd-88-gt.png> <./ibims-dd-dav2-88.png> <./ibims-dd-dfv-88.png> <./ibims-dd-dfdnet-88.png> <./ibims-fixed-dfv-1-new.png> <./ibims-fixed-dfdnet-1.png> <./ibims-fixed-dfv-28.png> <./ibims-fixed-dfdnet-28.png> <./ibims-fixed-dfv-88.png> <./ibims-fixed-dfdnet-88.png>]
-<ddff-sample-1.png, id=264, 578.16pt x 385.44pt>
+<ddff-sample-1.png, id=268, 578.16pt x 385.44pt>
 File: ddff-sample-1.png Graphic file (type png)
 <use ddff-sample-1.png>
 Package pdftex.def Info: ddff-sample-1.png  used on input line 579.
 (pdftex.def)             Requested size: 63.41434pt x 42.27501pt.
-<ddff-sample-1-gt1.png, id=265, 560.0925pt x 374.39874pt>
+<ddff-sample-1-gt1.png, id=269, 560.0925pt x 374.39874pt>
 File: ddff-sample-1-gt1.png Graphic file (type png)
 <use ddff-sample-1-gt1.png>
 Package pdftex.def Info: ddff-sample-1-gt1.png  used on input line 582.
 (pdftex.def)             Requested size: 63.41434pt x 42.38939pt.
-<dav2-ddff-1.png, id=266, 562.1pt x 373.395pt>
+<dav2-ddff-1.png, id=270, 562.1pt x 373.395pt>
 File: dav2-ddff-1.png Graphic file (type png)
 <use dav2-ddff-1.png>
 Package pdftex.def Info: dav2-ddff-1.png  used on input line 585.
 (pdftex.def)             Requested size: 63.41434pt x 42.12192pt.
-<depthpro-ddff-1.png, id=267, 560.0925pt x 374.39874pt>
+<depthpro-ddff-1.png, id=271, 560.0925pt x 374.39874pt>
 File: depthpro-ddff-1.png Graphic file (type png)
 <use depthpro-ddff-1.png>
 Package pdftex.def Info: depthpro-ddff-1.png  used on input line 588.
 (pdftex.def)             Requested size: 63.41434pt x 42.38939pt.
-<moge-ddff-1.png, id=268, 562.1pt x 374.39874pt>
+<moge-ddff-1.png, id=272, 562.1pt x 374.39874pt>
 File: moge-ddff-1.png Graphic file (type png)
 <use moge-ddff-1.png>
 Package pdftex.def Info: moge-ddff-1.png  used on input line 591.
 (pdftex.def)             Requested size: 63.41434pt x 42.23515pt.
-<dff-dfv-ddff1.png, id=269, 561.09625pt x 374.39874pt>
+<dff-dfv-ddff1.png, id=273, 561.09625pt x 374.39874pt>
 File: dff-dfv-ddff1.png Graphic file (type png)
 <use dff-dfv-ddff1.png>
 Package pdftex.def Info: dff-dfv-ddff1.png  used on input line 594.
 (pdftex.def)             Requested size: 63.41434pt x 42.30942pt.
-<dfd-net-low-defocus-random-scaling-1.png, id=270, 679.53876pt x 452.69125pt>
+<dfd-net-low-defocus-random-scaling-1.png, id=274, 679.53876pt x 452.69125pt>
 File: dfd-net-low-defocus-random-scaling-1.png Graphic file (type png)
 <use dfd-net-low-defocus-random-scaling-1.png>
 Package pdftex.def Info: dfd-net-low-defocus-random-scaling-1.png  used on input line 597.
 (pdftex.def)             Requested size: 63.41434pt x 42.23938pt.
-<ddff-2.png, id=271, 578.16pt x 385.44pt>
+<ddff-2.png, id=275, 578.16pt x 385.44pt>
 File: ddff-2.png Graphic file (type png)
 <use ddff-2.png>
 Package pdftex.def Info: ddff-2.png  used on input line 604.
 (pdftex.def)             Requested size: 63.41434pt x 42.27501pt.
-<ddff-2-gt.png, id=272, 559.08875pt x 373.395pt>
+<ddff-2-gt.png, id=276, 559.08875pt x 373.395pt>
 File: ddff-2-gt.png Graphic file (type png)
 <use ddff-2-gt.png>
 Package pdftex.def Info: ddff-2-gt.png  used on input line 607.
 (pdftex.def)             Requested size: 63.41434pt x 42.34982pt.
-<ddff-dav2-2.png, id=273, 560.0925pt x 373.395pt>
+<ddff-dav2-2.png, id=277, 560.0925pt x 373.395pt>
 File: ddff-dav2-2.png Graphic file (type png)
 <use ddff-dav2-2.png>
 Package pdftex.def Info: ddff-dav2-2.png  used on input line 610.
 (pdftex.def)             Requested size: 63.41434pt x 42.27576pt.
-<ddff-depthpro-2.png, id=274, 559.08875pt x 374.39874pt>
+<ddff-depthpro-2.png, id=278, 559.08875pt x 374.39874pt>
 File: ddff-depthpro-2.png Graphic file (type png)
 <use ddff-depthpro-2.png>
 Package pdftex.def Info: ddff-depthpro-2.png  used on input line 613.
 (pdftex.def)             Requested size: 63.41434pt x 42.46367pt.
-<ddff-moge-2.png, id=275, 560.0925pt x 374.39874pt>
+<ddff-moge-2.png, id=279, 560.0925pt x 374.39874pt>
 File: ddff-moge-2.png Graphic file (type png)
 <use ddff-moge-2.png>
 Package pdftex.def Info: ddff-moge-2.png  used on input line 616.
 (pdftex.def)             Requested size: 63.41434pt x 42.38939pt.
-<ddff-dfv-2.png, id=276, 558.085pt x 373.395pt>
+<ddff-dfv-2.png, id=280, 558.085pt x 373.395pt>
 File: ddff-dfv-2.png Graphic file (type png)
 <use ddff-dfv-2.png>
 Package pdftex.def Info: ddff-dfv-2.png  used on input line 619.
 (pdftex.def)             Requested size: 63.41434pt x 42.42389pt.
-<ddff-dfdnet-2.png, id=277, 560.0925pt x 374.39874pt>
+<ddff-dfdnet-2.png, id=281, 560.0925pt x 374.39874pt>
 File: ddff-dfdnet-2.png Graphic file (type png)
 <use ddff-dfdnet-2.png>
 Package pdftex.def Info: ddff-dfdnet-2.png  used on input line 622.
 (pdftex.def)             Requested size: 63.41434pt x 42.38939pt.
-<ddff-sample-7.png, id=278, 578.16pt x 385.44pt>
+<ddff-sample-7.png, id=282, 578.16pt x 385.44pt>
 File: ddff-sample-7.png Graphic file (type png)
 <use ddff-sample-7.png>
 Package pdftex.def Info: ddff-sample-7.png  used on input line 629.
 (pdftex.def)             Requested size: 63.41434pt x 42.27501pt.
-<ddff-sample-7-gt.png, id=279, 562.1pt x 374.39874pt>
+<ddff-sample-7-gt.png, id=283, 562.1pt x 374.39874pt>
 File: ddff-sample-7-gt.png Graphic file (type png)
 <use ddff-sample-7-gt.png>
 Package pdftex.def Info: ddff-sample-7-gt.png  used on input line 632.
 (pdftex.def)             Requested size: 63.41434pt x 42.23515pt.
-<ddff-dav2-7.png, id=280, 561.09625pt x 373.395pt>
+<ddff-dav2-7.png, id=284, 561.09625pt x 373.395pt>
 File: ddff-dav2-7.png Graphic file (type png)
 <use ddff-dav2-7.png>
 Package pdftex.def Info: ddff-dav2-7.png  used on input line 635.
 (pdftex.def)             Requested size: 63.41434pt x 42.19598pt.
-<ddff-depthpro-7.png, id=281, 564.1075pt x 375.4025pt>
+<ddff-depthpro-7.png, id=285, 564.1075pt x 375.4025pt>
 File: ddff-depthpro-7.png Graphic file (type png)
 <use ddff-depthpro-7.png>
 Package pdftex.def Info: ddff-depthpro-7.png  used on input line 638.
 (pdftex.def)             Requested size: 63.41434pt x 42.19945pt.
-<ddff-moge-7.png, id=282, 562.1pt x 374.39874pt>
+<ddff-moge-7.png, id=286, 562.1pt x 374.39874pt>
 File: ddff-moge-7.png Graphic file (type png)
 <use ddff-moge-7.png>
 Package pdftex.def Info: ddff-moge-7.png  used on input line 641.
 (pdftex.def)             Requested size: 63.41434pt x 42.23515pt.
-<ddff-dfv-7.png, id=283, 564.1075pt x 375.4025pt>
+<ddff-dfv-7.png, id=287, 564.1075pt x 375.4025pt>
 File: ddff-dfv-7.png Graphic file (type png)
 <use ddff-dfv-7.png>
 Package pdftex.def Info: ddff-dfv-7.png  used on input line 644.
 (pdftex.def)             Requested size: 63.41434pt x 42.19945pt.
-<ddff-dfd-net-7.png, id=284, 561.09625pt x 373.395pt>
+<ddff-dfd-net-7.png, id=288, 561.09625pt x 373.395pt>
 File: ddff-dfd-net-7.png Graphic file (type png)
 <use ddff-dfd-net-7.png>
 Package pdftex.def Info: ddff-dfd-net-7.png  used on input line 647.
 (pdftex.def)             Requested size: 63.41434pt x 42.19598pt.
 
 
-[22] (./template.bbl)
+[22]
+<absrel_delta1_bubble_chart_legends_panel.png, id=295, 652.5981pt x 318.34935pt>
+File: absrel_delta1_bubble_chart_legends_panel.png Graphic file (type png)
+<use absrel_delta1_bubble_chart_legends_panel.png>
+Package pdftex.def Info: absrel_delta1_bubble_chart_legends_panel.png  used on input line 677.
+(pdftex.def)             Requested size: 352.31625pt x 171.86237pt.
 
-[23 <./ddff-sample-1.png> <./ddff-sample-1-gt1.png> <./dav2-ddff-1.png> <./depthpro-ddff-1.png> <./moge-ddff-1.png> <./dff-dfv-ddff1.png> <./dfd-net-low-defocus-random-scaling-1.png> <./ddff-2.png> <./ddff-2-gt.png> <./ddff-dav2-2.png> <./ddff-depthpro-2.png> <./ddff-moge-2.png> <./ddff-dfv-2.png> <./ddff-dfdnet-2.png> <./ddff-sample-7.png> <./ddff-sample-7-gt.png> <./ddff-dav2-7.png> <./ddff-depthpro-7.png> <./ddff-moge-7.png> <./ddff-dfv-7.png> <./ddff-dfd-net-7.png>] (./template.aux)
+
+[23 <./ddff-sample-1.png> <./ddff-sample-1-gt1.png> <./dav2-ddff-1.png> <./depthpro-ddff-1.png> <./moge-ddff-1.png> <./dff-dfv-ddff1.png> <./dfd-net-low-defocus-random-scaling-1.png> <./ddff-2.png> <./ddff-2-gt.png> <./ddff-dav2-2.png> <./ddff-depthpro-2.png> <./ddff-moge-2.png> <./ddff-dfv-2.png> <./ddff-dfdnet-2.png> <./ddff-sample-7.png> <./ddff-sample-7-gt.png> <./ddff-dav2-7.png> <./ddff-depthpro-7.png> <./ddff-moge-7.png> <./ddff-dfv-7.png> <./ddff-dfd-net-7.png>] (./template.bbl)
+
+[24 <./absrel_delta1_bubble_chart_legends_panel.png>] (./template.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `template.out' has not changed.
-(rerunfilecheck)             Checksum: 76CE866F9420B24F6D7EB3C504C0B7E0;2477.
+(rerunfilecheck)             Checksum: 388A2433BEE3CF0C4021B44180D11B9D;2618.
  ) 
 Here is how much of TeX's memory you used:
- 26946 strings out of 473190
- 492644 string characters out of 5715801
- 906998 words of memory out of 5000000
- 49308 multiletter control sequences out of 15000+600000
+ 26960 strings out of 473190
+ 493148 string characters out of 5715801
+ 907153 words of memory out of 5000000
+ 49318 multiletter control sequences out of 15000+600000
  649098 words of font info for 336 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  92i,12n,95p,2820b,664s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on template.pdf (23 pages, 9277127 bytes).
+Output written on template.pdf (24 pages, 9353153 bytes).
 PDF statistics:
- 383 PDF objects out of 1000 (max. 8388607)
- 229 compressed objects within 3 object streams
- 60 named destinations out of 1000 (max. 500000)
- 99732 words of extra memory for PDF output out of 106986 (max. 10000000)
+ 398 PDF objects out of 1000 (max. 8388607)
+ 241 compressed objects within 3 object streams
+ 64 named destinations out of 1000 (max. 500000)
+ 99745 words of extra memory for PDF output out of 106986 (max. 10000000)
 
