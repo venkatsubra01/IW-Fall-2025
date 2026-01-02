@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex template"] 1767303679.0151 "template.aux" "template.bbl" "template" 1767303680.33642 0
+["bibtex template"] 1767311703.11242 "template.aux" "template.bbl" "template" 1767312575.81152 0
   "./IEEEtranS.bst" 1579876160 63078 c178ca025aee61c6ef412d990970df9b ""
   "./references.bib" 1767216672.62006 786 3d399290b7050af748c10df24feb5aaf ""
-  "template.aux" 1767303680.08566 3335 06261e9f68cc03b20b087a50d8ac63c2 "pdflatex"
+  "template.aux" 1767312575.54699 3335 350c5e631e766f981cb378a5129adf22 "pdflatex"
   (generated)
   "template.bbl"
   "template.blg"
   (rewritten before read)
-["pdflatex"] 1767303679.10821 "/Users/vs/Documents/Latex/IWreport/template.tex" "template.pdf" "template" 1767303680.33655 0
-  "/Users/vs/Documents/Latex/IWreport/template.tex" 1767303677.43815 37505 10b1acc244ea4be3ff7f51c78470cc0a ""
+["pdflatex"] 1767312574.50431 "/Users/vs/Documents/Latex/IWreport/template.tex" "template.pdf" "template" 1767312575.81167 0
+  "/Users/vs/Documents/Latex/IWreport/template.tex" 1767312574.30428 38669 54c4abebf8cb19d0218279cec24bbc6a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/helvetic/phvb8r.tfm" 1136768653 4484 b828043cbd581d289d955903c1339981 ""
@@ -35,12 +35,15 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/euler/eurm7.tfm" 1246382020 1228 22a83614922c993c1b2e124955a38ca1 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/euler/eurm8.tfm" 1246382020 1228 b1ea4289c42e56dec27ad97eef7c2df4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/euler/eurm9.tfm" 1246382020 1228 fa3508ca8cc32ad3715cc1fae8882e96 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmex10.tfm" 1136768653 992 662f679a0b3d2d53c1b94050fdaa3f50 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm" 1136768653 1528 abec98dbc43e172678c11b3b9031252a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr10.tfm" 1136768653 1296 45809c5a464d5f32c8f98ba97c1bb47f ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr12.tfm" 1136768653 1288 655e228510b4c2a1abe905c368440826 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm" 1136768653 1124 6c73e740cf17375f03eec0ee63599741 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy9.tfm" 1136768653 1116 25a7bf822c58caf309a702ef79f4afbb ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/latex-fonts/lasy6.tfm" 1136768653 520 4889cce2180234b97cad636b6039c722 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/rsfs/rsfs10.tfm" 1229303445 688 37338d6ab346c2f1466b29e195316aa4 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1248133631 30251 6afa5cb1d0204815a708a080681d4674 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
@@ -57,6 +60,7 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/vf/adobe/times/ptmri8t.vf" 1136768653 2328 6cd7df782b09b29cfc4d93e55b6b9a59 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/vf/adobe/times/zptmcm7m.vf" 1136768653 1132 27520247d3fe18d4266a226b461885c2 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/vf/adobe/times/zptmcm7t.vf" 1136768653 1108 d271d6f9de4122c3f8d3b65666167fac ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/vf/adobe/times/zptmcm7v.vf" 1136768653 1012 046369ac6a83af997c3aa05a43256ad5 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/vf/adobe/times/zptmcm7y.vf" 1136768653 964 5673178ff30617b900214de28ab32b38 ""
   "/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2025/texmf-dist/tex/generic/atbegshi/atbegshi.sty" 1575674566 24708 5584a51a7101caf7e6bbf1fc27d8f7b1 ""
@@ -222,10 +226,10 @@
   "Synthetic Focus Stack Generation Diagram.png" 1767106989.88254 1096686 f02c2a1c8d5fc2ba8e7f70e2382bf5bd ""
   "couriers.sty" 1579876160 1046 65097780df95c88bd4a498273f67af3b ""
   "jpaper.cls" 1579876161 6911 f11a119bc03bb904a35c4b7b655791cb ""
-  "template.aux" 1767303680.08566 3335 06261e9f68cc03b20b087a50d8ac63c2 "pdflatex"
-  "template.bbl" 1767303679.10548 1217 8dc58d80f10492b075b101ac9345222a "bibtex template"
-  "template.out" 1767303680.08636 2185 53dfbe4c8b40abe84f7297391bb968d4 "pdflatex"
-  "template.tex" 1767303677.43815 37505 10b1acc244ea4be3ff7f51c78470cc0a ""
+  "template.aux" 1767312575.54699 3335 350c5e631e766f981cb378a5129adf22 "pdflatex"
+  "template.bbl" 1767311703.20752 1217 8dc58d80f10492b075b101ac9345222a "bibtex template"
+  "template.out" 1767312575.54752 2185 53dfbe4c8b40abe84f7297391bb968d4 "pdflatex"
+  "template.tex" 1767312574.30428 38669 54c4abebf8cb19d0218279cec24bbc6a ""
   (generated)
   "template.aux"
   "template.log"

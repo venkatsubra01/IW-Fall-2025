@@ -12,6 +12,7 @@
 \usepackage{tikz}
 \usepackage{pifont}
 \usepackage{amsmath}
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
 \def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
 \newcommand{\xmark}{\ding{55}}%
 
@@ -230,20 +231,30 @@ At evaluation time, we undo the canonicalization by the same scaling factor. Thi
 
 \subsection{Loss}
 
-The loss function for DfDNet has two terms. The first term is a SiLog loss term:
+The training objective for DfDNet has two terms: SiLog and gradient matching scale, with a tunable hyperparameter $\alpha$ to balance them.
+
+\begin{equation}
+  \mathcal{L} = \alpha \mathcal{L}_\text{silog} + \beta \mathcal{L}_\text{gmscale}
+\end{equation}
+
+The first term is a balance between a scale-invariant log and $\ell_2$ loss term:
+
+\begin{equation}
+  \mathcal{L}_\text{silog} = \sqrt{\frac{\sum\limits_{i} d_i^2}{\ell} - \lambda (\frac{\sum\limits_{i} d_i}{\ell})^2}
+\end{equation}
+
+where $d_i=\log y_i - \log \hat{y}_i$ and $y_i$ is the target depth and $\hat{y}_i$ is the predicted depth over only the valid pixels (non-masked). $\ell$ is the number of valid pixels and $\lambda \in [0,1]$ but is usually set to 0.5 in the literature, so we do the same in this paper.
+
+The second term is a gradient matching scale loss. 
 
 
-The second term is a gradient matching scale loss:
 
+\begin{equation}
+  \mathcal{L}_\text{gmscale} = \frac{1}{n}\sum\limits_{k} \sum\limits_{i} |\nabla_x R_i^k| + |\nabla_y R_i^k|
+\end{equation}
+where $\nabla_x R_i^k$ is the difference between the prediction and target in the $x$ direction at scale $k$ of the gradient between neighboring valid pixels. $\nabla_y R_i^k$ is defined similarly in the $y$ direction. $n$ is the number of valid pixels, and we sum over $k=0, 1,2,3$ to capture different scales over larger distances in the input image.
 
-Thus, the overall loss function is:
-
-Here, $\alpha$ is a tunable hyperparameter for balancing \textbf{Finish}
-\begin{itemize}
-  \item Loss functions
-  
-  
-\end{itemize}
+Here, $\alpha$ and $\beta$ are both tunable hyperparameters for balancing both loss terms.
 
 \section{Evaluation, 5.5}
 \begin{table}[hbt]
